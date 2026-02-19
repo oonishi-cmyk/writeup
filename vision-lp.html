@@ -1,0 +1,1458 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vision | 株式会社ライトアップ</title>
+    <link rel="icon" href="ファビコン.svg" type="image/svg+xml">
+    <link rel="icon" href="ファビコン.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        /* ===== リセット & ベース ===== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+            font-weight: 400;
+            line-height: 1.9;
+            color: #2d2d2d;
+            background-color: #ffffff;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ===== スクロールアニメーション ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-in-delay-1 { transition-delay: 0.15s; }
+        .fade-in-delay-2 { transition-delay: 0.3s; }
+        .fade-in-delay-3 { transition-delay: 0.45s; }
+        .fade-in-delay-4 { transition-delay: 0.6s; }
+
+        /* ===== ユーティリティ ===== */
+        .container {
+            width: 88%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            color: #C51E25;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-lead {
+            font-size: 0.95rem;
+            color: #666666;
+            line-height: 2;
+            margin-bottom: 3rem;
+            max-width: 700px;
+        }
+
+        /* ===== ヘッダー ===== */
+        .site-header {
+            background: #ffffff;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .site-header .container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .site-header__logo {
+            height: 28px;
+            width: auto;
+        }
+
+        .site-header__name {
+            font-size: 0.75rem;
+            font-weight: 300;
+            color: #666666;
+            letter-spacing: 0.05em;
+        }
+
+        /* ===== Section 1: ヒーロー ===== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            overflow: hidden;
+            padding: 4rem 0;
+        }
+
+        /* ドットグリッドパターン */
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+        }
+
+        /* 装飾円（大） */
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: 10%;
+            right: -5%;
+            width: 500px;
+            height: 500px;
+            border: 1px solid rgba(197, 30, 37, 0.12);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-decoration-1 {
+            position: absolute;
+            bottom: 15%;
+            left: -3%;
+            width: 350px;
+            height: 350px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-decoration-2 {
+            position: absolute;
+            top: 20%;
+            right: 12%;
+            width: 180px;
+            height: 180px;
+            border: 1px solid rgba(197, 30, 37, 0.08);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-decoration-line {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 1px;
+            height: 80px;
+            background: linear-gradient(to bottom, transparent, rgba(197, 30, 37, 0.3));
+            pointer-events: none;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .hero-label {
+            font-size: 0.85rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(197, 30, 37, 0.7);
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.06em;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .hero-accent-line {
+            width: 60px;
+            height: 3px;
+            background: #C51E25;
+            margin: 0 auto 2.5rem;
+        }
+
+        .hero-sub {
+            font-size: 0.95rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.55);
+            line-height: 2;
+            max-width: 600px;
+            margin: 0 auto;
+            letter-spacing: 0.03em;
+        }
+
+        /* ===== 斜め区切り ===== */
+        .diagonal-top {
+            position: relative;
+        }
+
+        .diagonal-top::before {
+            content: "";
+            position: absolute;
+            top: -40px;
+            left: 0;
+            right: 0;
+            height: 80px;
+            background: inherit;
+            clip-path: polygon(0 50%, 100% 0, 100% 100%, 0 100%);
+            z-index: 1;
+        }
+
+        /* ===== Section 2: 現実認識 ===== */
+        .reality {
+            position: relative;
+            padding: 5rem 0;
+            background: #ffffff;
+        }
+
+        /* 薄いグリッド装飾 */
+        .reality::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(197, 30, 37, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(197, 30, 37, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        .reality .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .reality-intro {
+            font-size: 1.05rem;
+            line-height: 2.2;
+            color: #2d2d2d;
+            margin-bottom: 3rem;
+            max-width: 750px;
+        }
+
+        .reality-intro strong {
+            color: #C51E25;
+            font-weight: 700;
+        }
+
+        .reality-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .reality-card {
+            padding: 2rem 1.5rem;
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reality-card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .reality-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #C51E25;
+            opacity: 0.6;
+        }
+
+        .reality-card__number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #C51E25;
+            letter-spacing: 0.05em;
+            line-height: 1;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .reality-card__title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: 0.03em;
+        }
+
+        .reality-card__text {
+            font-size: 0.95rem;
+            color: #555555;
+            line-height: 1.9;
+        }
+
+        .reality-card__quote {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #f0f0f0;
+            font-size: 0.9rem;
+            color: #888888;
+            font-style: italic;
+            line-height: 1.8;
+        }
+
+        /* ===== Section 3: ミッション ===== */
+        .mission {
+            position: relative;
+            padding: 5rem 0;
+            background: #f8f8fa;
+        }
+
+        .mission-lead {
+            font-size: 1.05rem;
+            line-height: 2.2;
+            color: #444444;
+            margin-bottom: 3rem;
+            max-width: 750px;
+        }
+
+        .mission-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+
+        .mission-statement-wrap {
+            position: relative;
+        }
+
+        .mission-statement {
+            font-size: 1.15rem;
+            font-weight: 700;
+            line-height: 2.2;
+            letter-spacing: 0.03em;
+            border-left: 4px solid #C51E25;
+            padding: 1.5rem 0 1.5rem 1.5rem;
+            background: rgba(197, 30, 37, 0.02);
+            border-radius: 0 8px 8px 0;
+        }
+
+        .mission-subtitle {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #C51E25;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.25rem;
+        }
+
+        .mission-list {
+            list-style: none;
+        }
+
+        .mission-list li {
+            position: relative;
+            padding: 0.75rem 0 0.75rem 2.5rem;
+            margin-bottom: 0.25rem;
+            font-size: 0.95rem;
+            color: #2d2d2d;
+            line-height: 1.7;
+            background: #ffffff;
+            border-radius: 6px;
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+        }
+
+        .mission-list li::before {
+            content: "";
+            position: absolute;
+            left: 1rem;
+            top: 1.05em;
+            width: 10px;
+            height: 5px;
+            border-left: 2px solid #C51E25;
+            border-bottom: 2px solid #C51E25;
+            transform: rotate(-45deg);
+        }
+
+        /* ===== Section 4: サービス概要 ===== */
+        .services {
+            position: relative;
+            padding: 5rem 0;
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        .services::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30%;
+            height: 60%;
+            background-image:
+                radial-gradient(circle, rgba(197, 30, 37, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+        }
+
+        .services .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .service-card {
+            position: relative;
+            padding: 2rem 1.5rem;
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            overflow: hidden;
+        }
+
+        .service-card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .service-card__icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #C51E25, #e8474e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+            color: #ffffff;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .service-card__title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.03em;
+        }
+
+        .service-card__subtitle {
+            font-size: 0.8rem;
+            color: #C51E25;
+            font-weight: 400;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.75rem;
+        }
+
+        .service-card__text {
+            font-size: 0.9rem;
+            color: #666666;
+            line-height: 1.8;
+        }
+
+        .service-card__tag {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.25rem 0.75rem;
+            background: rgba(197, 30, 37, 0.06);
+            color: #C51E25;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-radius: 20px;
+            letter-spacing: 0.03em;
+        }
+
+        /* ===== Section 5: 自己実践 ===== */
+        .practice {
+            position: relative;
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        /* ドットグリッド装飾 */
+        .practice::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
+
+        .practice::after {
+            content: "";
+            position: absolute;
+            bottom: -10%;
+            right: -5%;
+            width: 400px;
+            height: 400px;
+            border: 1px solid rgba(197, 30, 37, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .practice .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .practice .section-label {
+            color: rgba(197, 30, 37, 0.7);
+        }
+
+        .practice .section-title {
+            color: #ffffff;
+        }
+
+        .practice-lead {
+            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 2.2;
+            margin-bottom: 3rem;
+            max-width: 750px;
+        }
+
+        .practice-statement {
+            font-size: 1.3rem;
+            font-weight: 700;
+            line-height: 2.2;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            padding: 2.5rem 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            position: relative;
+        }
+
+        .practice-statement::before {
+            content: "\201C";
+            position: absolute;
+            top: 0.5rem;
+            left: 1.5rem;
+            font-size: 3rem;
+            color: rgba(197, 30, 37, 0.4);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        .practice-statement-sub {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.4);
+            text-align: center;
+            margin-bottom: 2rem;
+            line-height: 1.8;
+        }
+
+        .practice-context {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-bottom: 3.5rem;
+            padding: 2rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .practice-context__item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+        }
+
+        .practice-context__icon {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(197, 30, 37, 0.2);
+            border: 1px solid rgba(197, 30, 37, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .practice-context__text {
+            flex: 1;
+        }
+
+        .practice-context__text strong {
+            display: block;
+            font-size: 0.95rem;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+        }
+
+        .practice-context__text span {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.45);
+            line-height: 1.8;
+        }
+
+        .practice-divider {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .practice-divider::before,
+        .practice-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .practice-divider span {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: rgba(197, 30, 37, 0.7);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .practice-keywords {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .practice-keyword {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 1.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            transition: background 0.3s ease, border-color 0.3s ease;
+            display: flex;
+            gap: 1.25rem;
+            align-items: flex-start;
+        }
+
+        .practice-keyword:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(197, 30, 37, 0.3);
+        }
+
+        .practice-keyword__number {
+            flex-shrink: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #C51E25;
+            opacity: 0.5;
+            line-height: 1;
+            min-width: 32px;
+        }
+
+        .practice-keyword__body {
+            flex: 1;
+        }
+
+        .practice-keyword__title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .practice-keyword__desc {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.45);
+            line-height: 1.8;
+        }
+
+        .practice-closing {
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .practice-closing__text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.05em;
+            line-height: 2;
+        }
+
+        .practice-closing__sub {
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.4);
+            line-height: 1.8;
+        }
+
+        /* ===== Section 6: 行動原則 ===== */
+        .principles {
+            position: relative;
+            padding: 5rem 0;
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        .principles::after {
+            content: "";
+            position: absolute;
+            top: 10%;
+            right: -2%;
+            width: 250px;
+            height: 250px;
+            border: 1px solid rgba(197, 30, 37, 0.06);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .principles .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .principle-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .principle-item {
+            display: flex;
+            gap: 1.5rem;
+            padding: 2.5rem 0;
+            border-bottom: 1px solid #eeeeee;
+            align-items: flex-start;
+        }
+
+        .principle-item:first-child {
+            padding-top: 0;
+        }
+
+        .principle-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .principle-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #C51E25;
+            line-height: 1;
+            flex-shrink: 0;
+            width: 60px;
+            opacity: 0.25;
+        }
+
+        .principle-content {
+            flex: 1;
+        }
+
+        .principle-content h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.03em;
+        }
+
+        .principle-content p {
+            font-size: 0.95rem;
+            color: #666666;
+            line-height: 1.9;
+        }
+
+        .principle-content .principle-detail {
+            margin-top: 0.75rem;
+            font-size: 0.88rem;
+            color: #999999;
+            line-height: 1.9;
+            padding-left: 1rem;
+            border-left: 2px solid #f0f0f0;
+        }
+
+        /* ===== Section 7: 成長メッセージ ===== */
+        .growth {
+            position: relative;
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #C51E25 0%, #a01820 50%, #8a1018 100%);
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        .growth::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 45px 45px;
+            pointer-events: none;
+        }
+
+        .growth::after {
+            content: "";
+            position: absolute;
+            top: -10%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .growth .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .growth .section-label {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .growth .section-title {
+            color: #ffffff;
+        }
+
+        .growth-lead {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.65);
+            line-height: 2.2;
+            margin-bottom: 3rem;
+            max-width: 700px;
+        }
+
+        .growth-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 3.5rem;
+        }
+
+        .growth-item {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.75rem 1.25rem;
+            text-align: center;
+            transition: background 0.3s ease;
+        }
+
+        .growth-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .growth-item__number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.25);
+            margin-bottom: 0.5rem;
+        }
+
+        .growth-item__title {
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+
+        .growth-item__desc {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.55);
+            line-height: 1.7;
+        }
+
+        .growth-divider {
+            width: 40px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.25);
+            margin: 0 auto 3rem;
+        }
+
+        .growth-closing {
+            font-size: 1.1rem;
+            font-weight: 400;
+            line-height: 2.2;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 700px;
+            margin: 0 auto 3rem;
+        }
+
+        .growth-final {
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 0.08em;
+            line-height: 2.2;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* ===== フッター ===== */
+        .site-footer {
+            background: #0d0d0d;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .site-footer__logo {
+            height: 24px;
+            width: auto;
+            margin: 0 auto 1.25rem;
+        }
+
+        .site-footer__company {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.35);
+            margin-bottom: 0.5rem;
+        }
+
+        .site-footer__copyright {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.2);
+            letter-spacing: 0.05em;
+        }
+
+        /* ===== レスポンシブ: タブレット (768px+) ===== */
+        @media (min-width: 768px) {
+            .hero-title {
+                font-size: 2.25rem;
+            }
+
+            .hero-sub {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .reality-cards {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .mission-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 4rem;
+                align-items: start;
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .practice-context {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .practice-keywords {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .practice-statement {
+                font-size: 1.4rem;
+            }
+
+            .principle-number {
+                font-size: 3.5rem;
+                width: 80px;
+            }
+
+            .growth-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 1.25rem;
+            }
+
+            .growth-closing {
+                font-size: 1.15rem;
+            }
+        }
+
+        /* ===== レスポンシブ: PC (1024px+) ===== */
+        @media (min-width: 1024px) {
+            .hero-title {
+                font-size: 2.75rem;
+            }
+
+            .reality, .mission, .services, .practice, .principles, .growth {
+                padding: 7rem 0;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .reality-card {
+                padding: 2.5rem 2rem;
+            }
+
+            .mission-statement {
+                font-size: 1.25rem;
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .practice-context {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .practice-keywords {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .practice-keyword {
+                padding: 2rem 1.5rem;
+            }
+
+            .practice-statement {
+                font-size: 1.5rem;
+                padding: 3rem 2.5rem;
+            }
+
+            .principle-item {
+                gap: 2.5rem;
+                padding: 3rem 0;
+            }
+
+            .principle-number {
+                font-size: 4rem;
+                width: 100px;
+            }
+
+            .principle-content h3 {
+                font-size: 1.25rem;
+            }
+
+            .growth-item {
+                padding: 2.5rem 1.5rem;
+            }
+
+            .growth-final {
+                font-size: 1.35rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ヘッダー -->
+    <header class="site-header">
+        <div class="container">
+            <img src="ロゴ.svg" alt="WriteUp!" class="site-header__logo">
+            <span class="site-header__name">株式会社ライトアップ</span>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- Section 1: ヒーロー -->
+        <section class="hero">
+            <div class="hero-decoration-1"></div>
+            <div class="hero-decoration-2"></div>
+            <div class="hero-decoration-line"></div>
+            <div class="container">
+                <p class="hero-label">Our Vision</p>
+                <h1 class="hero-title">
+                    中小企業にAI駆動経営を実装し、<br>
+                    日本の挑戦を前に進める。
+                </h1>
+                <div class="hero-accent-line"></div>
+                <p class="hero-sub">
+                    私たちは、中小企業にAI駆動経営を実装し、<br>
+                    日本の挑戦を前に進める会社である。<br>
+                    挑戦できる経営環境をつくるために、<br>
+                    私たち自身がAI駆動であれ。
+                </p>
+            </div>
+        </section>
+
+        <!-- Section 2: 現実認識 -->
+        <section class="reality">
+            <div class="container">
+                <p class="section-label fade-in">The Reality We See</p>
+                <h2 class="section-title fade-in">私たちが見ている現実</h2>
+                <p class="reality-intro fade-in">
+                    本来、日本の中小企業経営者は<strong>日本有数のチャレンジャー集団</strong>である。<br>
+                    十分な資本も人材もない中で、市場に挑み、価値を生み、雇用と地域を支えてきた。<br>
+                    しかし今、多くの挑戦が日々の重さに押し戻されている。
+                </p>
+                <div class="reality-cards">
+                    <div class="reality-card fade-in fade-in-delay-1">
+                        <div class="reality-card__number">01</div>
+                        <h3 class="reality-card__title">資金繰りに追われる</h3>
+                        <p class="reality-card__text">月末の資金を心配するだけで、次の一手を考える余裕がない。経営の根幹を揺るがす不安が、毎月繰り返される。</p>
+                        <p class="reality-card__quote">&ldquo;本来、未来を見るべき時間が、目の前の不安に奪われている&rdquo;</p>
+                    </div>
+                    <div class="reality-card fade-in fade-in-delay-2">
+                        <div class="reality-card__number">02</div>
+                        <h3 class="reality-card__title">採用と人材に悩む</h3>
+                        <p class="reality-card__text">良い人材が見つからない。見つかっても定着しない。人が抜ければ業務が止まる。属人的な経営が、成長の足かせになる。</p>
+                        <p class="reality-card__quote">&ldquo;正解のない意思決定を毎日続ける&rdquo;</p>
+                    </div>
+                    <div class="reality-card fade-in fade-in-delay-3">
+                        <div class="reality-card__number">03</div>
+                        <h3 class="reality-card__title">営業数字に眠れない</h3>
+                        <p class="reality-card__text">売上の波に一喜一憂し、どこを直せば利益が出るか見えない。戦略的な判断より、目の前の数字に追われ続ける日々。</p>
+                        <p class="reality-card__quote">&ldquo;経営者の挑戦心が、今日を生き延びることに消費されている&rdquo;</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: ミッション -->
+        <section class="mission">
+            <div class="container">
+                <p class="section-label fade-in">Our Mission</p>
+                <h2 class="section-title fade-in">挑戦できる経営環境を実装する</h2>
+                <p class="mission-lead fade-in">
+                    経営の不安を減らし、判断を支え、業務を構造化し、黒字を設計できる状態をつくることで、<br>
+                    本来持っている挑戦心を、もう一度解放できないか。私たちはそう考えている。
+                </p>
+                <div class="mission-content">
+                    <div class="fade-in">
+                        <p class="mission-statement">
+                            AI駆動とは、ツール導入ではない。<br>
+                            挑戦できる経営環境を<br>
+                            実装することである。
+                        </p>
+                    </div>
+                    <div class="fade-in fade-in-delay-1">
+                        <p class="mission-subtitle">私たちが実装したい経営の姿</p>
+                        <ul class="mission-list">
+                            <li>月末の資金を心配せずに、次の一手を考えられる</li>
+                            <li>売上の波に振り回されずに済む</li>
+                            <li>どこを直せば利益が出るか見えている</li>
+                            <li>人が抜けても会社が止まらない</li>
+                            <li>未来の挑戦に時間を使える</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: サービス概要 -->
+        <section class="services">
+            <div class="container">
+                <p class="section-label fade-in">Our Services</p>
+                <h2 class="section-title fade-in">Visionを実現する事業</h2>
+                <p class="section-lead fade-in">
+                    「全国、全ての中小企業を黒字にする」を掲げ、AIを活用した多角的なサービスで中小企業の経営課題に向き合っています。
+                </p>
+                <div class="services-grid">
+                    <div class="service-card fade-in fade-in-delay-1">
+                        <div class="service-card__icon">JS</div>
+                        <h3 class="service-card__title">JSaaS</h3>
+                        <p class="service-card__subtitle">AI事業計画書作成支援</p>
+                        <p class="service-card__text">AIを活用した事業計画書の作成支援プラットフォーム。経営の構造化を支え、補助金申請から経営改善まで伴走する。</p>
+                        <span class="service-card__tag">会員5万社</span>
+                    </div>
+                    <div class="service-card fade-in fade-in-delay-2">
+                        <div class="service-card__icon">AI</div>
+                        <h3 class="service-card__title">AI開発サービス</h3>
+                        <p class="service-card__subtitle">AIエージェント開発</p>
+                        <p class="service-card__text">中小企業の業務に特化したAIエージェントの開発・提供。属人性を排除し、誰でも成果を出せる仕組みをつくる。</p>
+                        <span class="service-card__tag">30種類展開</span>
+                    </div>
+                    <div class="service-card fade-in fade-in-delay-3">
+                        <div class="service-card__icon">J</div>
+                        <h3 class="service-card__title">Jシステム</h3>
+                        <p class="service-card__subtitle">補助金自動診断</p>
+                        <p class="service-card__text">数千種類の補助金・助成金を自動で診断。中小企業が活用できる支援を見逃さず、資金面の不安を軽減する。</p>
+                        <span class="service-card__tag">補助金支援</span>
+                    </div>
+                    <div class="service-card fade-in fade-in-delay-4">
+                        <div class="service-card__icon">MG</div>
+                        <h3 class="service-card__title">人材育成</h3>
+                        <p class="service-card__subtitle">AI研修・MG研修</p>
+                        <p class="service-card__text">AI活用研修や経営者育成のMG研修で、構造的に考える力と経営視点を養う。個人と組織の学習速度を加速させる。</p>
+                        <span class="service-card__tag">育成プログラム</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: 自己実践 -->
+        <section class="practice">
+            <div class="container">
+                <p class="section-label fade-in">Walk the Talk</p>
+                <h2 class="section-title fade-in">まず、私たち自身がAI駆動である</h2>
+                <p class="practice-lead fade-in">
+                    中小企業の挑戦を支える会社が、自らは旧来のやり方のままでは説得力がない。<br>
+                    顧客にAI駆動経営を届けるからこそ、私たち自身がその実践者であり続ける。<br>
+                    言っていることと、やっていることが一致している。それが実装集団の条件である。
+                </p>
+
+                <div class="practice-statement fade-in">
+                    顧客の挑戦を支えるなら、<br>
+                    私たち自身が挑戦者でなければならない。
+                </div>
+                <p class="practice-statement-sub fade-in">— 言行一致。それが実装集団の条件 —</p>
+
+                <!-- なぜ自らAI駆動か：3つの理由 -->
+                <div class="practice-context fade-in">
+                    <div class="practice-context__item">
+                        <div class="practice-context__icon">1</div>
+                        <div class="practice-context__text">
+                            <strong>顧客に示すべきは、実体験</strong>
+                            <span>ツールを売るのではなく、自らがAIで経営を変えた経験を届ける。机上の提案に説得力はない。</span>
+                        </div>
+                    </div>
+                    <div class="practice-context__item">
+                        <div class="practice-context__icon">2</div>
+                        <div class="practice-context__text">
+                            <strong>組織自体が進化の実験場</strong>
+                            <span>私たちの業務そのものが、AI駆動経営のプロトタイプ。成功も失敗も、顧客への最良のフィードバックになる。</span>
+                        </div>
+                    </div>
+                    <div class="practice-context__item">
+                        <div class="practice-context__icon">3</div>
+                        <div class="practice-context__text">
+                            <strong>変化のスピードで差をつける</strong>
+                            <span>AIの進化は早い。自ら使い、学び、適応するスピードこそが、コンサルティングの質を決める。</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="practice-divider fade-in">
+                    <span>5 Standards</span>
+                </div>
+
+                <!-- 5つの行動基準 -->
+                <div class="practice-keywords">
+                    <div class="practice-keyword fade-in fade-in-delay-1">
+                        <span class="practice-keyword__number">01</span>
+                        <div class="practice-keyword__body">
+                            <p class="practice-keyword__title">データで判断する</p>
+                            <p class="practice-keyword__desc">感覚や経験だけに頼らない。数値とファクトに基づく意思決定を徹底し、再現性のある判断基準をつくる。</p>
+                        </div>
+                    </div>
+                    <div class="practice-keyword fade-in fade-in-delay-1">
+                        <span class="practice-keyword__number">02</span>
+                        <div class="practice-keyword__body">
+                            <p class="practice-keyword__title">構造で設計する</p>
+                            <p class="practice-keyword__desc">場当たり的な対応ではなく、仕組みで課題を解く。再現性と拡張性を持った業務設計で、成果を属人化させない。</p>
+                        </div>
+                    </div>
+                    <div class="practice-keyword fade-in fade-in-delay-2">
+                        <span class="practice-keyword__number">03</span>
+                        <div class="practice-keyword__body">
+                            <p class="practice-keyword__title">属人性を減らす</p>
+                            <p class="practice-keyword__desc">特定の誰かがいないと回らない状態をなくす。ナレッジを共有し、誰でも同じ品質で成果を出せる組織をつくる。</p>
+                        </div>
+                    </div>
+                    <div class="practice-keyword fade-in fade-in-delay-2">
+                        <span class="practice-keyword__number">04</span>
+                        <div class="practice-keyword__body">
+                            <p class="practice-keyword__title">AIを前提に業務を組み立てる</p>
+                            <p class="practice-keyword__desc">既存のやり方にAIを足すのではなく、AIがある前提で業務プロセスを再設計する。AIネイティブな働き方を実践する。</p>
+                        </div>
+                    </div>
+                    <div class="practice-keyword fade-in fade-in-delay-3">
+                        <span class="practice-keyword__number">05</span>
+                        <div class="practice-keyword__body">
+                            <p class="practice-keyword__title">学習速度を上げる</p>
+                            <p class="practice-keyword__desc">変化を恐れず、小さく試して素早く学ぶ。昨日の自分より今日の自分が強い状態を、組織全体でつくり続ける。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="practice-closing fade-in">
+                    <p class="practice-closing__text">
+                        私たち自身がAI駆動の組織であること。<br>
+                        それが、顧客の挑戦を本気で支えるための、最低条件である。
+                    </p>
+                    <p class="practice-closing__sub">
+                        この姿勢があるからこそ、私たちは「コンサルタント」ではなく「実装集団」と名乗る。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: 行動原則 -->
+        <section class="principles">
+            <div class="container">
+                <p class="section-label fade-in">Our Principles</p>
+                <h2 class="section-title fade-in">行動原則</h2>
+                <p class="section-lead fade-in">
+                    私たちが日々の仕事で大切にしている3つの原則。<br>
+                    この原則が、すべての判断と行動の基盤になっている。
+                </p>
+                <div class="principle-list">
+                    <div class="principle-item fade-in">
+                        <span class="principle-number">01</span>
+                        <div class="principle-content">
+                            <h3>顧客の声を起点にする</h3>
+                            <p>机上の理論ではなく、経営者のリアルな課題から始める。</p>
+                            <p class="principle-detail">中小企業の現場には、教科書に載っていない課題がある。その声を聞き、本質を捉えることから、すべてが始まる。</p>
+                        </div>
+                    </div>
+                    <div class="principle-item fade-in">
+                        <span class="principle-number">02</span>
+                        <div class="principle-content">
+                            <h3>しかし、顧客よりも未来を見る</h3>
+                            <p>今日の悩みに寄り添いながら、明日の構造を設計する。</p>
+                            <p class="principle-detail">顧客の「今」に応えるだけでなく、まだ顧客自身が気づいていない「未来の課題」を見据え、先回りして設計する。</p>
+                        </div>
+                    </div>
+                    <div class="principle-item fade-in">
+                        <span class="principle-number">03</span>
+                        <div class="principle-content">
+                            <h3>失敗は良い。学習回数を最大化する</h3>
+                            <p>挑戦しないことが、唯一の失敗。失敗はコストではなく、進化のためのデータである。</p>
+                            <p class="principle-detail">スピードを重視し、小さく試し、素早く学ぶ。失敗から得られるデータこそが、次の成功の設計図になる。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 7: 成長メッセージ -->
+        <section class="growth">
+            <div class="container">
+                <p class="section-label fade-in">Your Challenge</p>
+                <h2 class="section-title fade-in">ここで働くということ</h2>
+                <p class="growth-lead fade-in">
+                    この挑戦は、会社のためだけではない。<br>
+                    ここで働く一人ひとりが、自分自身の力を加速させていくことになる。
+                </p>
+                <div class="growth-grid">
+                    <div class="growth-item fade-in fade-in-delay-1">
+                        <p class="growth-item__number">01</p>
+                        <p class="growth-item__title">構造で考える力を<br>身につける</p>
+                        <p class="growth-item__desc">複雑な課題を整理し、本質を見抜く思考力</p>
+                    </div>
+                    <div class="growth-item fade-in fade-in-delay-2">
+                        <p class="growth-item__number">02</p>
+                        <p class="growth-item__title">経営視点を持つ</p>
+                        <p class="growth-item__desc">ビジネス全体を俯瞰できる広い視野</p>
+                    </div>
+                    <div class="growth-item fade-in fade-in-delay-3">
+                        <p class="growth-item__number">03</p>
+                        <p class="growth-item__title">未来を設計する<br>思考を鍛える</p>
+                        <p class="growth-item__desc">今日の延長ではなく、あるべき姿から逆算する力</p>
+                    </div>
+                    <div class="growth-item fade-in fade-in-delay-4">
+                        <p class="growth-item__number">04</p>
+                        <p class="growth-item__title">挑戦と学習を<br>習慣にする</p>
+                        <p class="growth-item__desc">失敗を恐れず、学び続ける姿勢</p>
+                    </div>
+                </div>
+                <div class="growth-divider"></div>
+                <p class="growth-closing fade-in">
+                    中小企業の挑戦を加速させる仕事は、<br>
+                    同時に、自分自身の挑戦を加速させる仕事でもある。
+                </p>
+                <div class="growth-final fade-in">
+                    日本有数のチャレンジャー集団である中小企業に、<br>
+                    もう一度、未来へのチャレンジを。<br><br>
+                    そのために、私たちはAI駆動であれ。
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- フッター -->
+    <footer class="site-footer">
+        <img src="ロゴ.svg" alt="WriteUp!" class="site-footer__logo">
+        <p class="site-footer__company">株式会社ライトアップ（東証マザーズ 6580）</p>
+        <p class="site-footer__copyright">&copy; 2026 WriteUp! Co., Ltd.</p>
+    </footer>
+
+    <!-- スクロールアニメーション -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var targets = document.querySelectorAll(".fade-in");
+            if ("IntersectionObserver" in window) {
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("is-visible");
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.15 });
+                targets.forEach(function (target) {
+                    observer.observe(target);
+                });
+            } else {
+                targets.forEach(function (target) {
+                    target.classList.add("is-visible");
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
