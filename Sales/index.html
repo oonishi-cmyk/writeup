@@ -8,311 +8,1532 @@
     <link rel="icon" href="../ファビコン.png" type="image/png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700;900&display=swap" rel="stylesheet">
     <style>
         /* ===== リセット & ベース ===== */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        html { font-size: 16px; scroll-behavior: smooth; }
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
-            font-weight: 400; line-height: 1.8; color: #1a1a2e; background-color: #ffffff;
-            -webkit-font-smoothing: antialiased; overflow-x: hidden;
+            font-weight: 400;
+            line-height: 1.9;
+            color: #2d2d2d;
+            background-color: #ffffff;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
-        img { max-width: 100%; height: auto; display: block; }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
 
         /* ===== スクロールアニメーション ===== */
-        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
-        .fade-in.is-visible { opacity: 1; transform: translateY(0); }
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
         .fade-in-delay-1 { transition-delay: 0.15s; }
         .fade-in-delay-2 { transition-delay: 0.3s; }
         .fade-in-delay-3 { transition-delay: 0.45s; }
+        .fade-in-delay-4 { transition-delay: 0.6s; }
 
         /* ===== ユーティリティ ===== */
-        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
-        .section-label { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.75rem; color: #2563EB; }
-        .section-title { font-size: 1.75rem; font-weight: 700; letter-spacing: 0.04em; margin-bottom: 1rem; line-height: 1.5; }
-        .section-subtitle { font-size: 1rem; color: #64748b; line-height: 1.9; margin-bottom: 3rem; max-width: 700px; }
+        .container {
+            width: 88%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 300;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            color: #C51E25;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-lead {
+            font-size: 0.95rem;
+            color: #666666;
+            line-height: 2;
+            margin-bottom: 3rem;
+            max-width: 700px;
+        }
+
         .text-center { text-align: center; }
         .mx-auto { margin-left: auto; margin-right: auto; }
 
+        /* ===== ヘッダー ===== */
+        .site-header {
+            background: #ffffff;
+            padding: 1rem 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .site-header .container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .site-header__logo {
+            height: 28px;
+            width: auto;
+        }
+
+        .site-header__name {
+            font-size: 0.75rem;
+            font-weight: 300;
+            color: #666666;
+            letter-spacing: 0.05em;
+        }
+
         /* ===== Section 1: ヒーロー ===== */
         .hero {
-            position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0f2847 100%); overflow: hidden; padding: 4rem 0;
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            overflow: hidden;
+            padding: 4rem 0;
         }
-        .hero::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(circle, rgba(37,99,235,0.08) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; }
-        .hero::after { content: ""; position: absolute; top: -20%; right: -10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%); border-radius: 50%; pointer-events: none; }
-        .hero-glow { position: absolute; bottom: -15%; left: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%); border-radius: 50%; pointer-events: none; }
-        .hero .container { position: relative; z-index: 1; text-align: center; }
-        .hero-logo { height: 36px; width: auto; margin: 0 auto 3rem; filter: brightness(0) invert(1); opacity: 0.9; }
-        .hero-label { display: inline-block; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.25em; color: #60a5fa; margin-bottom: 2rem; padding: 0.4rem 1.2rem; border: 1px solid rgba(96,165,250,0.3); border-radius: 100px; }
-        .hero-title { font-size: 2.5rem; font-weight: 900; color: #ffffff; letter-spacing: 0.06em; line-height: 1.6; margin-bottom: 2rem; }
-        .hero-title span { background: linear-gradient(90deg, #60a5fa, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .hero-accent-line { width: 60px; height: 3px; background: linear-gradient(90deg, #2563EB, #10b981); margin: 0 auto 2rem; border-radius: 2px; }
-        .hero-sub { font-size: 1.1rem; font-weight: 300; color: rgba(255,255,255,0.6); line-height: 2; max-width: 600px; margin: 0 auto; }
-        .hero-sub strong { color: rgba(255,255,255,0.9); font-weight: 500; }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            top: 10%;
+            right: -5%;
+            width: 500px;
+            height: 500px;
+            border: 1px solid rgba(197, 30, 37, 0.12);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-decoration-1 {
+            position: absolute;
+            bottom: 15%;
+            left: -3%;
+            width: 350px;
+            height: 350px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-decoration-2 {
+            position: absolute;
+            top: 20%;
+            right: 12%;
+            width: 180px;
+            height: 180px;
+            border: 1px solid rgba(197, 30, 37, 0.08);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .hero-decoration-line {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 1px;
+            height: 80px;
+            background: linear-gradient(to bottom, transparent, rgba(197, 30, 37, 0.3));
+            pointer-events: none;
+        }
+
+        .hero .container {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+        }
+
+        .hero-label {
+            font-size: 0.85rem;
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: rgba(197, 30, 37, 0.7);
+            margin-bottom: 2.5rem;
+        }
+
+        .hero-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.06em;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .hero-accent-line {
+            width: 60px;
+            height: 3px;
+            background: #C51E25;
+            margin: 0 auto 2.5rem;
+        }
+
+        .hero-sub {
+            font-size: 0.95rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.55);
+            line-height: 2;
+            max-width: 600px;
+            margin: 0 auto;
+            letter-spacing: 0.03em;
+        }
+
+        .hero-sub strong {
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 400;
+        }
 
         /* ===== Section 2: 3つのAI製品紹介 ===== */
-        .products { position: relative; padding: 6rem 0; background: #f8fafc; }
-        .products-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        .products {
+            position: relative;
+            padding: 5rem 0;
+            background: #ffffff;
+        }
+
+        .products::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            height: 100%;
+            background-image:
+                linear-gradient(rgba(197, 30, 37, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(197, 30, 37, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        .products .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
 
         .product-card {
-            position: relative; padding: 2.5rem 2rem; background: #ffffff; border: 1px solid #e2e8f0;
-            border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.04); cursor: pointer;
-            transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease; overflow: hidden;
+            position: relative;
+            padding: 2rem 1.5rem;
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            overflow: hidden;
+            cursor: pointer;
         }
-        .product-card:hover { box-shadow: 0 12px 40px rgba(37,99,235,0.1); transform: translateY(-4px); }
-        .product-card.is-active { border-color: #2563EB; box-shadow: 0 12px 40px rgba(37,99,235,0.15); transform: translateY(0); }
 
-        .product-card__icon { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
-        .product-card--1 .product-card__icon { background: linear-gradient(135deg, #2563EB, #3b82f6); color: #fff; }
-        .product-card--2 .product-card__icon { background: linear-gradient(135deg, #10b981, #34d399); color: #fff; }
-        .product-card--3 .product-card__icon { background: linear-gradient(135deg, #8b5cf6, #a78bfa); color: #fff; }
+        .product-card:hover {
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
 
-        .product-card__badge { display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; padding: 0.25rem 0.75rem; border-radius: 100px; margin-bottom: 1rem; }
-        .product-card--1 .product-card__badge { background: rgba(37,99,235,0.08); color: #2563EB; }
-        .product-card--2 .product-card__badge { background: rgba(16,185,129,0.08); color: #059669; }
-        .product-card--3 .product-card__badge { background: rgba(139,92,246,0.08); color: #7c3aed; }
+        .product-card.is-active {
+            border-color: #C51E25;
+            box-shadow: 0 8px 30px rgba(197, 30, 37, 0.1);
+            transform: translateY(0);
+        }
 
-        .product-card__title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 0.03em; }
-        .product-card__catch { font-size: 0.9rem; font-weight: 500; color: #475569; margin-bottom: 1rem; line-height: 1.6; }
-        .product-card__text { font-size: 0.9rem; color: #64748b; line-height: 1.8; }
-        .product-card__highlight { margin-top: 1.25rem; padding: 0.75rem 1rem; background: #f1f5f9; border-radius: 8px; font-size: 0.85rem; font-weight: 500; color: #334155; display: flex; align-items: center; gap: 0.5rem; }
-        .product-card__highlight::before { content: ""; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-        .product-card--1 .product-card__highlight::before { background: #2563EB; }
-        .product-card--2 .product-card__highlight::before { background: #10b981; }
-        .product-card--3 .product-card__highlight::before { background: #8b5cf6; }
+        .product-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #C51E25;
+            opacity: 0.6;
+        }
 
-        .product-card__toggle { margin-top: 1.25rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; color: #2563EB; letter-spacing: 0.03em; }
-        .product-card--2 .product-card__toggle { color: #059669; }
-        .product-card--3 .product-card__toggle { color: #7c3aed; }
-        .product-card__toggle-arrow { transition: transform 0.3s ease; display: inline-block; }
-        .product-card.is-active .product-card__toggle-arrow { transform: rotate(180deg); }
+        .product-card__number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #C51E25;
+            letter-spacing: 0.05em;
+            line-height: 1;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .product-card__title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.03em;
+        }
+
+        .product-card__catch {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: #C51E25;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.03em;
+        }
+
+        .product-card__text {
+            font-size: 0.95rem;
+            color: #555555;
+            line-height: 1.9;
+        }
+
+        .product-card__quote {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #f0f0f0;
+            font-size: 0.9rem;
+            color: #888888;
+            font-style: italic;
+            line-height: 1.8;
+        }
+
+        .product-card__toggle {
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #C51E25;
+            letter-spacing: 0.03em;
+        }
+
+        .product-card__toggle-arrow {
+            transition: transform 0.3s ease;
+            display: inline-block;
+            font-size: 0.65rem;
+        }
+
+        .product-card.is-active .product-card__toggle-arrow {
+            transform: rotate(180deg);
+        }
 
         /* 詳細展開パネル */
-        .product-detail { max-height: 0; overflow: hidden; transition: max-height 0.5s ease, opacity 0.4s ease; opacity: 0; grid-column: 1 / -1; }
-        .product-detail.is-open { opacity: 1; }
-        .product-detail__inner { padding: 2rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; margin-top: -0.5rem; }
+        .product-detail {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease, opacity 0.4s ease;
+            opacity: 0;
+            grid-column: 1 / -1;
+        }
 
-        .detail-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+        .product-detail.is-open {
+            opacity: 1;
+        }
 
-        .detail-features { list-style: none; }
-        .detail-features li { position: relative; padding: 0.6rem 0 0.6rem 1.75rem; font-size: 0.9rem; color: #334155; line-height: 1.7; border-bottom: 1px solid #f1f5f9; }
-        .detail-features li:last-child { border-bottom: none; }
-        .detail-features li::before { content: ""; position: absolute; left: 0; top: 0.9rem; width: 10px; height: 5px; border-left: 2px solid #2563EB; border-bottom: 2px solid #2563EB; transform: rotate(-45deg); }
+        .product-detail__inner {
+            padding: 2rem 1.5rem;
+            background: #f8f8fa;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            margin-top: -0.5rem;
+        }
 
-        .detail-section-title { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 0.75rem; }
-        .detail-section-title--blue { color: #2563EB; }
-        .detail-section-title--green { color: #059669; }
-        .detail-section-title--purple { color: #7c3aed; }
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
 
-        .detail-diff { padding: 1.25rem; background: #f8fafc; border-radius: 12px; border-left: 4px solid #2563EB; font-size: 0.9rem; color: #334155; line-height: 1.8; }
-        .detail-diff--green { border-left-color: #10b981; }
-        .detail-diff--purple { border-left-color: #8b5cf6; }
+        .detail-features {
+            list-style: none;
+        }
 
-        .detail-stats { display: flex; flex-wrap: wrap; gap: 1rem; }
-        .detail-stat { flex: 1; min-width: 120px; text-align: center; padding: 1rem; background: linear-gradient(135deg, #eff6ff, #f0fdf4); border-radius: 12px; }
-        .detail-stat__value { font-size: 1.5rem; font-weight: 900; color: #1e293b; }
-        .detail-stat__label { font-size: 0.75rem; color: #64748b; font-weight: 500; }
+        .detail-features li {
+            position: relative;
+            padding: 0.6rem 0 0.6rem 2rem;
+            font-size: 0.95rem;
+            color: #2d2d2d;
+            line-height: 1.7;
+            border-bottom: 1px solid #eeeeee;
+        }
 
-        .detail-price { display: inline-flex; align-items: baseline; gap: 0.5rem; padding: 0.75rem 1.25rem; background: #1e293b; color: #fff; border-radius: 8px; font-size: 0.9rem; font-weight: 500; }
-        .detail-price strong { font-size: 1.1rem; font-weight: 900; }
+        .detail-features li:last-child {
+            border-bottom: none;
+        }
 
-        .detail-url { display: inline-flex; align-items: center; gap: 0.35rem; margin-top: 0.75rem; font-size: 0.8rem; color: #2563EB; text-decoration: none; font-weight: 500; }
-        .detail-url:hover { text-decoration: underline; }
+        .detail-features li::before {
+            content: "";
+            position: absolute;
+            left: 0.75rem;
+            top: 1em;
+            width: 10px;
+            height: 5px;
+            border-left: 2px solid #C51E25;
+            border-bottom: 2px solid #C51E25;
+            transform: rotate(-45deg);
+        }
+
+        .detail-section-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #C51E25;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .detail-diff {
+            padding: 1.5rem;
+            background: rgba(197, 30, 37, 0.02);
+            border-radius: 0 8px 8px 0;
+            border-left: 4px solid #C51E25;
+            font-size: 0.95rem;
+            color: #2d2d2d;
+            line-height: 1.9;
+        }
+
+        .detail-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .detail-stat {
+            flex: 1;
+            min-width: 100px;
+            text-align: center;
+            padding: 1.25rem 1rem;
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        }
+
+        .detail-stat__value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #C51E25;
+            line-height: 1;
+            margin-bottom: 0.35rem;
+        }
+
+        .detail-stat__label {
+            font-size: 0.75rem;
+            color: #888888;
+            font-weight: 300;
+        }
+
+        .detail-price {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            background: #1a1a2e;
+            color: #ffffff;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 300;
+        }
+
+        .detail-price strong {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .detail-url {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            margin-top: 0.75rem;
+            font-size: 0.8rem;
+            color: #C51E25;
+            text-decoration: none;
+            font-weight: 400;
+            letter-spacing: 0.03em;
+        }
+
+        .detail-url:hover {
+            text-decoration: underline;
+        }
 
         /* ===== Lシンク 別枠セクション ===== */
-        .lsync { position: relative; padding: 5rem 0; background: #ffffff; }
-        .lsync-card {
-            max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 0;
-            background: #ffffff; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 8px 32px rgba(0,0,0,0.06); overflow: hidden;
+        .lsync {
+            position: relative;
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #ffffff;
+            overflow: hidden;
         }
-        .lsync-card__header { background: linear-gradient(135deg, #064e3b, #065f46); padding: 2.5rem; color: #fff; }
-        .lsync-card__badge { display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; padding: 0.3rem 0.8rem; border-radius: 100px; background: rgba(52,211,153,0.2); color: #6ee7b7; margin-bottom: 1rem; }
-        .lsync-card__title { font-size: 1.5rem; font-weight: 900; margin-bottom: 0.5rem; }
-        .lsync-card__catch { font-size: 1rem; color: rgba(255,255,255,0.7); font-weight: 400; }
-        .lsync-card__body { padding: 2.5rem; }
 
-        .lsync-features { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 2rem; }
-        .lsync-feature { display: flex; gap: 0.75rem; align-items: flex-start; }
-        .lsync-feature__icon { flex-shrink: 0; width: 36px; height: 36px; border-radius: 8px; background: #ecfdf5; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
-        .lsync-feature__text { flex: 1; }
-        .lsync-feature__text strong { display: block; font-size: 0.85rem; font-weight: 700; color: #1e293b; margin-bottom: 0.15rem; }
-        .lsync-feature__text span { font-size: 0.8rem; color: #64748b; line-height: 1.6; }
+        .lsync::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+            pointer-events: none;
+        }
 
-        .lsync-diff { padding: 1.25rem; background: #ecfdf5; border-radius: 12px; border-left: 4px solid #10b981; margin-bottom: 1.5rem; }
-        .lsync-diff__title { font-size: 0.8rem; font-weight: 700; color: #059669; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
-        .lsync-diff__text { font-size: 0.9rem; color: #334155; line-height: 1.8; }
+        .lsync::after {
+            content: "";
+            position: absolute;
+            bottom: -10%;
+            right: -5%;
+            width: 400px;
+            height: 400px;
+            border: 1px solid rgba(197, 30, 37, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+        }
 
-        .lsync-bottom { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; }
-        .lsync-price { padding: 0.75rem 1.25rem; background: #1e293b; color: #fff; border-radius: 8px; font-size: 0.9rem; font-weight: 500; }
-        .lsync-price strong { font-size: 1.1rem; font-weight: 900; }
-        .lsync-stats { display: flex; gap: 1.5rem; }
-        .lsync-stat { text-align: center; }
-        .lsync-stat__value { font-size: 1.25rem; font-weight: 900; color: #059669; }
-        .lsync-stat__label { font-size: 0.7rem; color: #64748b; }
+        .lsync .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .lsync .section-label {
+            color: rgba(197, 30, 37, 0.7);
+        }
+
+        .lsync .section-title {
+            color: #ffffff;
+        }
+
+        .lsync .section-lead {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .lsync-statement {
+            font-size: 1.15rem;
+            font-weight: 700;
+            line-height: 2.2;
+            color: #ffffff;
+            text-align: center;
+            padding: 2.5rem 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.04);
+            position: relative;
+            margin-bottom: 2.5rem;
+        }
+
+        .lsync-statement::before {
+            content: "\201C";
+            position: absolute;
+            top: 0.5rem;
+            left: 1.5rem;
+            font-size: 3rem;
+            color: rgba(197, 30, 37, 0.4);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        .lsync-features {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .lsync-feature {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 1.5rem;
+            background: rgba(255, 255, 255, 0.03);
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .lsync-feature:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: rgba(197, 30, 37, 0.3);
+        }
+
+        .lsync-feature__icon {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(197, 30, 37, 0.2);
+            border: 1px solid rgba(197, 30, 37, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .lsync-feature__text {
+            flex: 1;
+        }
+
+        .lsync-feature__text strong {
+            display: block;
+            font-size: 0.95rem;
+            color: #ffffff;
+            margin-bottom: 0.25rem;
+        }
+
+        .lsync-feature__text span {
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.45);
+            line-height: 1.8;
+        }
+
+        .lsync-bottom {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            padding: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .lsync-price {
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 300;
+            color: #ffffff;
+        }
+
+        .lsync-price strong {
+            font-weight: 700;
+        }
+
+        .lsync-stats {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .lsync-stat {
+            text-align: center;
+        }
+
+        .lsync-stat__value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .lsync-stat__label {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 300;
+        }
 
         /* ===== Section 3: ROIシミュレーション ===== */
-        .roi { position: relative; padding: 6rem 0; background: #f8fafc; }
-        .roi-main-visual { text-align: center; margin-bottom: 3rem; padding: 3rem 2rem; background: linear-gradient(135deg, #eff6ff, #f0fdf4); border-radius: 20px; border: 1px solid #dbeafe; }
-        .roi-main-visual__label { font-size: 0.85rem; font-weight: 500; color: #2563EB; margin-bottom: 0.5rem; }
-        .roi-main-visual__number { font-size: 3.5rem; font-weight: 900; color: #1e293b; line-height: 1.2; letter-spacing: -0.02em; }
-        .roi-main-visual__number span { background: linear-gradient(90deg, #2563EB, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-        .roi-main-visual__sub { font-size: 1rem; color: #64748b; margin-top: 0.5rem; }
+        .roi {
+            position: relative;
+            padding: 5rem 0;
+            background: #f8f8fa;
+        }
 
-        .roi-flow { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 3rem; }
-        .roi-flow__item { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem 1.5rem; text-align: center; min-width: 140px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
-        .roi-flow__item-label { font-size: 0.75rem; color: #94a3b8; font-weight: 500; margin-bottom: 0.25rem; }
-        .roi-flow__item-value { font-size: 1.5rem; font-weight: 900; color: #1e293b; }
-        .roi-flow__arrow { font-size: 1.5rem; color: #cbd5e1; font-weight: 300; }
-        .roi-flow__item--result { background: linear-gradient(135deg, #2563EB, #1d4ed8); border-color: #2563EB; }
-        .roi-flow__item--result .roi-flow__item-label { color: rgba(255,255,255,0.7); }
-        .roi-flow__item--result .roi-flow__item-value { color: #fff; }
+        .roi-main-visual {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 3rem 2rem;
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
 
-        .roi-cards { display: grid; grid-template-columns: 1fr; gap: 1.25rem; margin-bottom: 2.5rem; }
-        .roi-card { padding: 2rem; border-radius: 12px; border: 1px solid #e2e8f0; background: #ffffff; }
-        .roi-card__icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
-        .roi-card__title { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
-        .roi-card__text { font-size: 0.9rem; color: #64748b; line-height: 1.8; }
-        .roi-bottom { text-align: center; padding: 2rem; background: #f0fdf4; border-radius: 12px; border: 1px solid #bbf7d0; }
-        .roi-bottom__text { font-size: 1.15rem; font-weight: 700; color: #059669; line-height: 1.8; }
-        .roi-bottom__sub { font-size: 0.85rem; color: #64748b; margin-top: 0.5rem; }
+        .roi-main-visual__label {
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: #C51E25;
+            letter-spacing: 0.1em;
+            margin-bottom: 0.5rem;
+        }
+
+        .roi-main-visual__number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #2d2d2d;
+            line-height: 1.3;
+        }
+
+        .roi-main-visual__number span {
+            color: #C51E25;
+        }
+
+        .roi-main-visual__sub {
+            font-size: 0.95rem;
+            color: #888888;
+            font-weight: 300;
+            margin-top: 0.5rem;
+        }
+
+        .roi-flow {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 3rem;
+        }
+
+        .roi-flow__item {
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            text-align: center;
+            min-width: 130px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+        }
+
+        .roi-flow__item-label {
+            font-size: 0.75rem;
+            color: #888888;
+            font-weight: 300;
+            margin-bottom: 0.25rem;
+        }
+
+        .roi-flow__item-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #2d2d2d;
+        }
+
+        .roi-flow__arrow {
+            font-size: 1.25rem;
+            color: #cccccc;
+            font-weight: 300;
+        }
+
+        .roi-flow__item--result {
+            background: #C51E25;
+            border-color: #C51E25;
+        }
+
+        .roi-flow__item--result .roi-flow__item-label {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .roi-flow__item--result .roi-flow__item-value {
+            color: #ffffff;
+        }
+
+        .roi-cards {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .roi-card {
+            padding: 2rem 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #e8e8e8;
+            background: #ffffff;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .roi-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #C51E25;
+            opacity: 0.4;
+        }
+
+        .roi-card__title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.03em;
+        }
+
+        .roi-card__text {
+            font-size: 0.95rem;
+            color: #555555;
+            line-height: 1.9;
+        }
+
+        .roi-bottom {
+            text-align: center;
+            padding: 2rem;
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        .roi-bottom__text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #C51E25;
+            line-height: 1.8;
+        }
+
+        .roi-bottom__sub {
+            font-size: 0.85rem;
+            color: #888888;
+            font-weight: 300;
+            margin-top: 0.5rem;
+        }
 
         /* ===== Section 4: 料金体系 ===== */
-        .pricing { position: relative; padding: 6rem 0; background: #ffffff; }
-        .pricing-table { max-width: 800px; margin: 0 auto 2.5rem; }
-        .pricing-row { display: flex; align-items: stretch; border-bottom: 1px solid #e2e8f0; }
-        .pricing-row:last-child { border-bottom: none; }
-        .pricing-row--header { background: #1e293b; border-radius: 12px 12px 0 0; border-bottom: none; }
-        .pricing-row--header .pricing-cell { color: #fff; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em; }
-        .pricing-row--total { background: linear-gradient(135deg, #eff6ff, #f0fdf4); border-radius: 0 0 12px 12px; }
-        .pricing-cell { padding: 1.25rem 1.5rem; font-size: 0.95rem; display: flex; align-items: center; }
-        .pricing-cell:first-child { flex: 1; font-weight: 500; }
-        .pricing-cell:last-child { width: 220px; justify-content: flex-end; font-weight: 700; font-size: 1.1rem; }
-        .pricing-row--total .pricing-cell:last-child { color: #2563EB; font-size: 1.25rem; }
-        .pricing-row:not(.pricing-row--header):not(.pricing-row--total) { background: #fff; }
-        .pricing-note { font-size: 0.85rem; color: #94a3b8; text-align: center; }
-        .pricing-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 600px; margin: 2.5rem auto 0; }
-        .pricing-summary__item { text-align: center; padding: 1.5rem; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; }
-        .pricing-summary__label { font-size: 0.8rem; color: #94a3b8; font-weight: 500; margin-bottom: 0.25rem; }
-        .pricing-summary__value { font-size: 1.75rem; font-weight: 900; color: #1e293b; }
-        .pricing-summary__value small { font-size: 0.85rem; font-weight: 500; color: #64748b; }
+        .pricing {
+            position: relative;
+            padding: 5rem 0;
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        .pricing::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 30%;
+            height: 60%;
+            background-image:
+                radial-gradient(circle, rgba(197, 30, 37, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+        }
+
+        .pricing .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .pricing-table {
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+        }
+
+        .pricing-row {
+            display: flex;
+            align-items: stretch;
+            border-bottom: 1px solid #eeeeee;
+        }
+
+        .pricing-row:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-row--header {
+            background: #1a1a2e;
+            border-radius: 8px 8px 0 0;
+            border-bottom: none;
+        }
+
+        .pricing-row--header .pricing-cell {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.08em;
+        }
+
+        .pricing-row--total {
+            background: rgba(197, 30, 37, 0.03);
+            border-radius: 0 0 8px 8px;
+        }
+
+        .pricing-cell {
+            padding: 1.25rem 1.5rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .pricing-cell:first-child {
+            flex: 1;
+            font-weight: 400;
+        }
+
+        .pricing-cell:last-child {
+            width: 200px;
+            justify-content: flex-end;
+            font-weight: 700;
+        }
+
+        .pricing-row--total .pricing-cell:last-child {
+            color: #C51E25;
+            font-size: 1.15rem;
+        }
+
+        .pricing-row:not(.pricing-row--header):not(.pricing-row--total) {
+            background: #ffffff;
+        }
+
+        .pricing-note {
+            font-size: 0.85rem;
+            color: #999999;
+            text-align: center;
+            font-weight: 300;
+        }
+
+        .pricing-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            max-width: 550px;
+            margin: 2.5rem auto 0;
+        }
+
+        .pricing-summary__item {
+            text-align: center;
+            padding: 1.5rem;
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e8e8e8;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        .pricing-summary__label {
+            font-size: 0.75rem;
+            color: #999999;
+            font-weight: 300;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.25rem;
+        }
+
+        .pricing-summary__value {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: #2d2d2d;
+        }
+
+        .pricing-summary__value small {
+            font-size: 0.85rem;
+            font-weight: 300;
+            color: #888888;
+        }
 
         /* ===== Section 5: コスト比較 ===== */
-        .comparison { position: relative; padding: 6rem 0; background: #f8fafc; }
-        .comparison-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; max-width: 900px; margin: 0 auto 3rem; }
-        .comparison-card { padding: 2.5rem 2rem; border-radius: 16px; position: relative; }
-        .comparison-card--ai { background: linear-gradient(135deg, #eff6ff, #f0fdf4); border: 2px solid #2563EB; }
-        .comparison-card--human { background: #ffffff; border: 1px solid #e2e8f0; }
-        .comparison-card__recommend { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: linear-gradient(90deg, #2563EB, #10b981); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 0.3rem 1rem; border-radius: 100px; letter-spacing: 0.05em; white-space: nowrap; }
-        .comparison-card__title { font-size: 1.15rem; font-weight: 700; margin-bottom: 1.5rem; text-align: center; }
-        .comparison-card__price { text-align: center; margin-bottom: 1.5rem; }
-        .comparison-card__price-label { font-size: 0.8rem; color: #94a3b8; font-weight: 500; }
-        .comparison-card__price-value { font-size: 2.5rem; font-weight: 900; color: #1e293b; line-height: 1.2; }
-        .comparison-card--ai .comparison-card__price-value { color: #2563EB; }
-        .comparison-card__price-unit { font-size: 0.85rem; color: #64748b; }
-        .comparison-card__list { list-style: none; }
-        .comparison-card__list li { position: relative; padding: 0.5rem 0 0.5rem 1.75rem; font-size: 0.9rem; color: #475569; line-height: 1.7; }
-        .comparison-card__list li::before { content: ""; position: absolute; left: 0; top: 0.85rem; width: 16px; height: 16px; border-radius: 50%; }
-        .comparison-card--ai .comparison-card__list li::before { background: #10b981; box-shadow: inset 0 0 0 3px #fff; }
-        .comparison-card--human .comparison-card__list li::before { background: #f87171; box-shadow: inset 0 0 0 3px #fff; }
-        .comparison-card__vs { display: none; }
-        .comparison-bottom { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; max-width: 700px; margin: 0 auto; }
-        .comparison-bottom__item { text-align: center; padding: 1.5rem 1rem; background: #f0fdf4; border-radius: 12px; border: 1px solid #bbf7d0; }
-        .comparison-bottom__icon { font-size: 1.75rem; margin-bottom: 0.5rem; }
-        .comparison-bottom__text { font-size: 0.9rem; font-weight: 700; color: #059669; }
-        .comparison-bottom__sub { font-size: 0.75rem; color: #64748b; margin-top: 0.25rem; }
+        .comparison {
+            position: relative;
+            padding: 5rem 0;
+            background: #f8f8fa;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto 3rem;
+        }
+
+        .comparison-card {
+            padding: 2.5rem 2rem;
+            border-radius: 8px;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        .comparison-card--ai {
+            background: #ffffff;
+            border: 2px solid #C51E25;
+        }
+
+        .comparison-card--human {
+            background: #ffffff;
+            border: 1px solid #e8e8e8;
+        }
+
+        .comparison-card__recommend {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #C51E25;
+            color: #ffffff;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            letter-spacing: 0.1em;
+            white-space: nowrap;
+        }
+
+        .comparison-card__title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            letter-spacing: 0.03em;
+        }
+
+        .comparison-card__price {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .comparison-card__price-label {
+            font-size: 0.75rem;
+            color: #999999;
+            font-weight: 300;
+        }
+
+        .comparison-card__price-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #2d2d2d;
+            line-height: 1.2;
+        }
+
+        .comparison-card--ai .comparison-card__price-value {
+            color: #C51E25;
+        }
+
+        .comparison-card__price-unit {
+            font-size: 0.8rem;
+            color: #888888;
+            font-weight: 300;
+        }
+
+        .comparison-card__list {
+            list-style: none;
+        }
+
+        .comparison-card__list li {
+            position: relative;
+            padding: 0.5rem 0 0.5rem 1.75rem;
+            font-size: 0.9rem;
+            color: #555555;
+            line-height: 1.8;
+        }
+
+        .comparison-card__list li::before {
+            content: "";
+            position: absolute;
+            left: 0.25rem;
+            top: 0.9rem;
+            width: 10px;
+            height: 5px;
+            transform: rotate(-45deg);
+        }
+
+        .comparison-card--ai .comparison-card__list li::before {
+            border-left: 2px solid #C51E25;
+            border-bottom: 2px solid #C51E25;
+        }
+
+        .comparison-card--human .comparison-card__list li::before {
+            border-left: 2px solid #cccccc;
+            border-bottom: 2px solid #cccccc;
+        }
+
+        .comparison-card__vs {
+            display: none;
+        }
+
+        .comparison-bottom {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .comparison-bottom__item {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e8e8e8;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+
+        .comparison-bottom__number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #C51E25;
+            opacity: 0.3;
+            margin-bottom: 0.5rem;
+        }
+
+        .comparison-bottom__text {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #2d2d2d;
+        }
+
+        .comparison-bottom__sub {
+            font-size: 0.8rem;
+            color: #888888;
+            font-weight: 300;
+            margin-top: 0.25rem;
+        }
 
         /* ===== Section 6: 活用イメージ ===== */
-        .use-cases { position: relative; padding: 6rem 0; background: #ffffff; }
-        .use-cases-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; max-width: 900px; margin: 0 auto; }
-        .use-case-card { padding: 2rem; background: #f8fafc; border-radius: 16px; border: 1px solid #e2e8f0; display: flex; gap: 1.25rem; align-items: flex-start; }
-        .use-case-card__number { flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #2563EB, #3b82f6); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 900; }
-        .use-case-card__body { flex: 1; }
-        .use-case-card__title { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
-        .use-case-card__text { font-size: 0.9rem; color: #64748b; line-height: 1.8; }
-        .use-case-card__result { margin-top: 0.75rem; font-size: 0.85rem; font-weight: 700; color: #059669; }
+        .use-cases {
+            position: relative;
+            padding: 5rem 0;
+            background: #ffffff;
+            overflow: hidden;
+        }
+
+        .use-cases::after {
+            content: "";
+            position: absolute;
+            top: 10%;
+            right: -2%;
+            width: 250px;
+            height: 250px;
+            border: 1px solid rgba(197, 30, 37, 0.06);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .use-cases .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .use-case-item {
+            display: flex;
+            gap: 1.5rem;
+            padding: 2.5rem 0;
+            border-bottom: 1px solid #eeeeee;
+            align-items: flex-start;
+        }
+
+        .use-case-item:first-child {
+            padding-top: 0;
+        }
+
+        .use-case-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .use-case-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #C51E25;
+            line-height: 1;
+            flex-shrink: 0;
+            width: 60px;
+            opacity: 0.25;
+        }
+
+        .use-case-content {
+            flex: 1;
+        }
+
+        .use-case-content h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.03em;
+        }
+
+        .use-case-content p {
+            font-size: 0.95rem;
+            color: #666666;
+            line-height: 1.9;
+        }
+
+        .use-case-content .use-case-result {
+            margin-top: 0.75rem;
+            font-size: 0.88rem;
+            color: #C51E25;
+            font-weight: 700;
+            line-height: 1.8;
+        }
 
         /* ===== Section 7: 導入プラン ===== */
-        .closing { position: relative; padding: 6rem 0; background: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0f2847 100%); color: #fff; overflow: hidden; }
-        .closing::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(circle, rgba(37,99,235,0.06) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; }
-        .closing .container { position: relative; z-index: 1; }
-        .closing .section-label { color: #60a5fa; }
-        .closing .section-title { color: #fff; }
-        .closing .section-subtitle { color: rgba(255,255,255,0.5); }
-        .plan-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; max-width: 900px; margin: 0 auto 3rem; }
-        .plan-card { padding: 2.5rem 2rem; border-radius: 16px; position: relative; transition: transform 0.3s ease; }
-        .plan-card:hover { transform: translateY(-4px); }
-        .plan-card--a { background: rgba(37,99,235,0.12); border: 2px solid rgba(37,99,235,0.4); }
-        .plan-card--b { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); }
-        .plan-card__recommend { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: linear-gradient(90deg, #2563EB, #10b981); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 0.3rem 1.2rem; border-radius: 100px; letter-spacing: 0.08em; white-space: nowrap; }
-        .plan-card__name { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; color: #60a5fa; margin-bottom: 0.5rem; }
-        .plan-card--b .plan-card__name { color: rgba(255,255,255,0.5); }
-        .plan-card__title { font-size: 1.35rem; font-weight: 700; margin-bottom: 1.25rem; }
-        .plan-card__list { list-style: none; margin-bottom: 1.5rem; }
-        .plan-card__list li { position: relative; padding: 0.4rem 0 0.4rem 1.5rem; font-size: 0.9rem; color: rgba(255,255,255,0.75); line-height: 1.7; }
-        .plan-card__list li::before { content: ""; position: absolute; left: 0; top: 0.75rem; width: 8px; height: 4px; border-left: 2px solid #60a5fa; border-bottom: 2px solid #60a5fa; transform: rotate(-45deg); }
-        .plan-card--b .plan-card__list li::before { border-color: rgba(255,255,255,0.35); }
-        .plan-card__merit { padding: 1rem 1.25rem; border-radius: 8px; font-size: 0.85rem; font-weight: 500; line-height: 1.7; }
-        .plan-card--a .plan-card__merit { background: rgba(37,99,235,0.15); color: #93c5fd; }
-        .plan-card--b .plan-card__merit { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.5); }
-        .closing-cta { text-align: center; padding: 2.5rem 2rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; background: rgba(255,255,255,0.03); max-width: 700px; margin: 0 auto; }
-        .closing-cta__text { font-size: 1.15rem; font-weight: 700; color: #fff; line-height: 1.9; margin-bottom: 0.75rem; }
-        .closing-cta__sub { font-size: 0.9rem; color: rgba(255,255,255,0.45); line-height: 1.8; }
+        .closing {
+            position: relative;
+            padding: 5rem 0;
+            background: linear-gradient(135deg, #C51E25 0%, #a01820 50%, #8a1018 100%);
+            color: #ffffff;
+            overflow: hidden;
+        }
+
+        .closing::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image:
+                radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 45px 45px;
+            pointer-events: none;
+        }
+
+        .closing::after {
+            content: "";
+            position: absolute;
+            top: -10%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        .closing .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .closing .section-label {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .closing .section-title {
+            color: #ffffff;
+        }
+
+        .closing .section-lead {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .plan-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+            max-width: 900px;
+            margin: 0 auto 3rem;
+        }
+
+        .plan-card {
+            padding: 2.5rem 2rem;
+            border-radius: 8px;
+            position: relative;
+            transition: background 0.3s ease;
+        }
+
+        .plan-card--a {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .plan-card--b {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .plan-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .plan-card__recommend {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ffffff;
+            color: #C51E25;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            letter-spacing: 0.08em;
+            white-space: nowrap;
+        }
+
+        .plan-card__name {
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .plan-card__title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            letter-spacing: 0.03em;
+        }
+
+        .plan-card__list {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .plan-card__list li {
+            position: relative;
+            padding: 0.4rem 0 0.4rem 1.5rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+        }
+
+        .plan-card__list li::before {
+            content: "";
+            position: absolute;
+            left: 0.25rem;
+            top: 0.85rem;
+            width: 8px;
+            height: 4px;
+            border-left: 2px solid rgba(255, 255, 255, 0.5);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+            transform: rotate(-45deg);
+        }
+
+        .plan-card__merit {
+            padding: 1rem 1.25rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 300;
+            line-height: 1.8;
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.65);
+        }
+
+        .closing-cta {
+            text-align: center;
+            padding: 2.5rem 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .closing-cta__text {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 2;
+            letter-spacing: 0.05em;
+        }
+
+        .closing-cta__sub {
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.4);
+            font-weight: 300;
+            line-height: 1.8;
+        }
 
         /* ===== フッター ===== */
-        .site-footer { background: #0a0f1a; padding: 3rem 0; text-align: center; }
-        .site-footer__logo { height: 24px; width: auto; margin: 0 auto 1.25rem; filter: brightness(0) invert(1); opacity: 0.6; }
-        .site-footer__company { font-size: 0.8rem; color: rgba(255,255,255,0.3); margin-bottom: 0.5rem; }
-        .site-footer__copyright { font-size: 0.7rem; color: rgba(255,255,255,0.15); letter-spacing: 0.05em; }
+        .site-footer {
+            background: #0d0d0d;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .site-footer__logo {
+            height: 24px;
+            width: auto;
+            margin: 0 auto 1.25rem;
+        }
+
+        .site-footer__company {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.35);
+        }
+
+        .site-footer__copyright {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.2);
+            letter-spacing: 0.05em;
+        }
 
         /* ===== レスポンシブ: タブレット (768px+) ===== */
         @media (min-width: 768px) {
-            .hero-title { font-size: 3rem; }
-            .section-title { font-size: 2rem; }
-            .products-grid { grid-template-columns: repeat(3, 1fr); }
-            .roi-main-visual__number { font-size: 4.5rem; }
-            .roi-cards { grid-template-columns: repeat(3, 1fr); }
-            .comparison-grid { grid-template-columns: 1fr 1fr; position: relative; }
-            .comparison-card__vs { display: flex; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 48px; height: 48px; background: #1e293b; border: 2px solid #e2e8f0; border-radius: 50%; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 900; color: #fff; z-index: 2; }
-            .plan-grid { grid-template-columns: 1fr 1fr; }
-            .detail-grid { grid-template-columns: 1fr 1fr; }
-            .lsync-card { grid-template-columns: 2fr 3fr; }
-            .lsync-features { grid-template-columns: 1fr 1fr; }
-            .use-cases-grid { grid-template-columns: 1fr 1fr; }
+            .hero-title {
+                font-size: 2.25rem;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .roi-main-visual__number {
+                font-size: 4rem;
+            }
+
+            .roi-cards {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr 1fr;
+                position: relative;
+            }
+
+            .comparison-card__vs {
+                display: flex;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                width: 48px;
+                height: 48px;
+                background: #1a1a2e;
+                border: 2px solid #e8e8e8;
+                border-radius: 50%;
+                align-items: center;
+                justify-content: center;
+                font-size: 0.8rem;
+                font-weight: 700;
+                color: #ffffff;
+                z-index: 2;
+                letter-spacing: 0.05em;
+            }
+
+            .plan-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .detail-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .lsync-features {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .use-case-number {
+                font-size: 3.5rem;
+                width: 80px;
+            }
         }
 
         /* ===== レスポンシブ: PC (1024px+) ===== */
         @media (min-width: 1024px) {
-            .hero-title { font-size: 3.5rem; }
-            .products, .roi, .pricing, .comparison, .use-cases, .closing, .lsync { padding: 7rem 0; }
-            .section-title { font-size: 2.25rem; }
-            .product-card { padding: 2.5rem; }
-            .comparison-card { padding: 3rem 2.5rem; }
-            .plan-card { padding: 3rem 2.5rem; }
+            .hero-title {
+                font-size: 2.75rem;
+            }
+
+            .products, .roi, .pricing, .comparison, .use-cases, .closing, .lsync {
+                padding: 7rem 0;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .product-card {
+                padding: 2.5rem 2rem;
+            }
+
+            .comparison-card {
+                padding: 3rem 2.5rem;
+            }
+
+            .plan-card {
+                padding: 3rem 2.5rem;
+            }
+
+            .use-case-item {
+                gap: 2.5rem;
+                padding: 3rem 0;
+            }
+
+            .use-case-number {
+                font-size: 4rem;
+                width: 100px;
+            }
+
+            .use-case-content h3 {
+                font-size: 1.25rem;
+            }
+
+            .lsync-statement {
+                font-size: 1.3rem;
+                padding: 3rem 2.5rem;
+            }
         }
 
         /* ===== 画面共有最適化: 大画面 (1920px) ===== */
         @media (min-width: 1400px) {
-            .container { max-width: 1300px; }
-            .hero-title { font-size: 4rem; }
-            .section-title { font-size: 2.5rem; }
-            .roi-main-visual__number { font-size: 5rem; }
+            .hero-title {
+                font-size: 3.25rem;
+            }
+
+            .section-title {
+                font-size: 2.25rem;
+            }
+
+            .roi-main-visual__number {
+                font-size: 4.5rem;
+            }
         }
     </style>
 </head>
 <body>
 
+    <!-- ヘッダー -->
+    <header class="site-header">
+        <div class="container">
+            <img src="../ロゴ.svg" alt="WriteUp!" class="site-header__logo">
+            <span class="site-header__name">株式会社ライトアップ</span>
+        </div>
+    </header>
+
     <main>
 
-        <!-- ===== Section 1: ヒーロー（①挨拶） ===== -->
+        <!-- ===== Section 1: ヒーロー ===== -->
         <section class="hero">
-            <div class="hero-glow"></div>
+            <div class="hero-decoration-1"></div>
+            <div class="hero-decoration-2"></div>
+            <div class="hero-decoration-line"></div>
             <div class="container">
-                <img src="../ロゴ.svg" alt="WriteUp!" class="hero-logo fade-in">
                 <p class="hero-label fade-in">AI Sales Solution</p>
                 <h1 class="hero-title fade-in">
-                    <span>AIで、売上を構造化する。</span>
+                    AIで、売上を構造化する。
                 </h1>
                 <div class="hero-accent-line fade-in"></div>
                 <p class="hero-sub fade-in">
@@ -324,52 +1545,41 @@
             </div>
         </section>
 
-        <!-- ===== Section 2: 3つのAI製品紹介（②ウェビナー内容の代弁） ===== -->
+        <!-- ===== Section 2: 3つのAI製品紹介 ===== -->
         <section class="products">
             <div class="container">
-                <p class="section-label fade-in text-center">3 AI Products</p>
-                <h2 class="section-title fade-in text-center">売上を構造化する、3つのAI</h2>
-                <p class="section-subtitle fade-in text-center mx-auto">
-                    ウェビナーでご紹介した3つのAIソリューション。それぞれが営業の異なるフェーズを担い、連携して売上の最大化を実現します。
+                <p class="section-label fade-in">3 AI Products</p>
+                <h2 class="section-title fade-in">売上を構造化する、3つのAI</h2>
+                <p class="section-lead fade-in">
+                    ウェビナーでご紹介した3つのAIソリューション。<br>
+                    それぞれが営業の異なるフェーズを担い、連携して売上の最大化を実現します。
                 </p>
                 <div class="products-grid">
 
-                    <!-- 社長コピーAI -->
-                    <div class="product-card product-card--1 fade-in fade-in-delay-1" data-target="detail-1">
-                        <div class="product-card__icon">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                        </div>
-                        <span class="product-card__badge">AI 01</span>
+                    <div class="product-card fade-in fade-in-delay-1" data-target="detail-1">
+                        <div class="product-card__number">01</div>
                         <h3 class="product-card__title">社長コピーAI</h3>
-                        <p class="product-card__catch">社長の想い・人柄をAIに学習させ、営業・SNS発信を24時間自動化</p>
+                        <p class="product-card__catch">社長の想い・人柄をAIに学習させ、24時間自動化</p>
                         <p class="product-card__text">社長本人の想い・経験・人柄をAIに学習させ、営業文・SNS投稿・顧客対応を24時間自動で発信し続けます。</p>
-                        <div class="product-card__highlight">営業返信率 300% 向上</div>
+                        <p class="product-card__quote">&ldquo;営業返信率 300%向上&rdquo;</p>
                         <div class="product-card__toggle">詳細を見る <span class="product-card__toggle-arrow">&#9660;</span></div>
                     </div>
 
-                    <!-- 名刺フォローAI -->
-                    <div class="product-card product-card--2 fade-in fade-in-delay-2" data-target="detail-2">
-                        <div class="product-card__icon">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 10h0"/><path d="M11 10h6"/><path d="M7 14h0"/><path d="M11 14h6"/></svg>
-                        </div>
-                        <span class="product-card__badge">AI 02</span>
+                    <div class="product-card fade-in fade-in-delay-2" data-target="detail-2">
+                        <div class="product-card__number">02</div>
                         <h3 class="product-card__title">名刺フォローAI</h3>
                         <p class="product-card__catch">名刺交換後のフォローを自動化し、紹介営業を最大化</p>
                         <p class="product-card__text">名刺の90%は放置される現実。3年・10年先まで超長期フォローを自動化し、紹介営業に特化した地方最適設計。</p>
-                        <div class="product-card__highlight">売上2倍事例 / 紹介成功率3倍</div>
+                        <p class="product-card__quote">&ldquo;売上2倍事例 / 紹介成功率3倍&rdquo;</p>
                         <div class="product-card__toggle">詳細を見る <span class="product-card__toggle-arrow">&#9660;</span></div>
                     </div>
 
-                    <!-- 営業リスト自動生成AI -->
-                    <div class="product-card product-card--3 fade-in fade-in-delay-3" data-target="detail-3">
-                        <div class="product-card__icon">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                        </div>
-                        <span class="product-card__badge">AI 03</span>
+                    <div class="product-card fade-in fade-in-delay-3" data-target="detail-3">
+                        <div class="product-card__number">03</div>
                         <h3 class="product-card__title">営業リスト自動生成AI</h3>
-                        <p class="product-card__catch">毎朝9時に営業リスト作成と初回メール送付まで完了</p>
+                        <p class="product-card__catch">毎朝9時にリスト作成と初回メール送付まで完了</p>
                         <p class="product-card__text">条件指定で300〜350件を自動生成。メール・FAX送付から日次レポートまで、人の2〜4時間作業を完全代替します。</p>
-                        <div class="product-card__highlight">営業母数 6〜10倍 / 作業時間ゼロ</div>
+                        <p class="product-card__quote">&ldquo;営業母数 6〜10倍 / 作業時間ゼロ&rdquo;</p>
                         <div class="product-card__toggle">詳細を見る <span class="product-card__toggle-arrow">&#9660;</span></div>
                     </div>
 
@@ -378,7 +1588,7 @@
                         <div class="product-detail__inner">
                             <div class="detail-grid">
                                 <div>
-                                    <p class="detail-section-title detail-section-title--blue">FEATURES - 主要機能</p>
+                                    <p class="detail-section-title">Features</p>
                                     <ul class="detail-features">
                                         <li>社長データ50%超を学習し、想い・原体験・感情まで再現</li>
                                         <li>営業文・SNS投稿・ブログ記事を自動生成</li>
@@ -386,30 +1596,21 @@
                                         <li>LP・Kindle・公式LINEなど複数チャネルに対応</li>
                                     </ul>
                                     <div class="detail-diff" style="margin-top: 1.25rem;">
-                                        <p class="detail-section-title detail-section-title--blue">DIFFERENTIATOR - 差別化ポイント</p>
+                                        <p class="detail-section-title">Differentiator</p>
                                         社長データ50%超＋感情・原体験まで学習。単なるテンプレではなく、人間らしい"エモさ"を再現するAI。
                                     </div>
                                 </div>
                                 <div>
-                                    <p class="detail-section-title detail-section-title--blue">RESULTS - 効果・実績</p>
+                                    <p class="detail-section-title">Results</p>
                                     <div class="detail-stats">
-                                        <div class="detail-stat">
-                                            <p class="detail-stat__value">300%</p>
-                                            <p class="detail-stat__label">営業返信率 向上</p>
-                                        </div>
-                                        <div class="detail-stat">
-                                            <p class="detail-stat__value">24h</p>
-                                            <p class="detail-stat__label">発信継続</p>
-                                        </div>
-                                        <div class="detail-stat">
-                                            <p class="detail-stat__value">SNS</p>
-                                            <p class="detail-stat__label">反応増加</p>
-                                        </div>
+                                        <div class="detail-stat"><p class="detail-stat__value">300%</p><p class="detail-stat__label">営業返信率 向上</p></div>
+                                        <div class="detail-stat"><p class="detail-stat__value">24h</p><p class="detail-stat__label">発信継続</p></div>
+                                        <div class="detail-stat"><p class="detail-stat__value">SNS</p><p class="detail-stat__label">反応増加</p></div>
                                     </div>
-                                    <p class="detail-section-title detail-section-title--blue" style="margin-top: 1.5rem;">PRICING</p>
+                                    <p class="detail-section-title" style="margin-top: 1.5rem;">Pricing</p>
                                     <div class="detail-price">初期 <strong>50万円</strong> ／ 月額 <strong>3万円</strong></div>
                                     <br><a href="https://copyai.figma.site/" target="_blank" rel="noopener" class="detail-url">&#8599; 詳細サイトを見る</a>
-                                    <p style="margin-top: 0.75rem; font-size: 0.8rem; color: #64748b;">対象: 創業者、1人社長、社員10名以下の中小企業</p>
+                                    <p style="margin-top: 0.75rem; font-size: 0.8rem; color: #999; font-weight: 300;">対象: 創業者、1人社長、社員10名以下の中小企業</p>
                                 </div>
                             </div>
                         </div>
@@ -420,38 +1621,29 @@
                         <div class="product-detail__inner">
                             <div class="detail-grid">
                                 <div>
-                                    <p class="detail-section-title detail-section-title--green">FEATURES - 主要機能</p>
+                                    <p class="detail-section-title">Features</p>
                                     <ul class="detail-features">
                                         <li>名刺撮影だけで顧客カルテを自動生成</li>
                                         <li>3年・10年先までの超長期フォローメールを自動送信</li>
                                         <li>記念日通知で人間関係を維持</li>
                                         <li>顧客情報の自動補完で手間ゼロ</li>
                                     </ul>
-                                    <div class="detail-diff detail-diff--green" style="margin-top: 1.25rem;">
-                                        <p class="detail-section-title detail-section-title--green">DIFFERENTIATOR - 差別化ポイント</p>
+                                    <div class="detail-diff" style="margin-top: 1.25rem;">
+                                        <p class="detail-section-title">Differentiator</p>
                                         3年・10年先まで超長期フォローを完全自動化。紹介営業に特化し、地方中小企業に最適化した設計。
                                     </div>
                                 </div>
                                 <div>
-                                    <p class="detail-section-title detail-section-title--green">RESULTS - 効果・実績</p>
+                                    <p class="detail-section-title">Results</p>
                                     <div class="detail-stats">
-                                        <div class="detail-stat">
-                                            <p class="detail-stat__value">2倍</p>
-                                            <p class="detail-stat__label">売上向上事例</p>
-                                        </div>
-                                        <div class="detail-stat">
-                                            <p class="detail-stat__value">3倍</p>
-                                            <p class="detail-stat__label">紹介成功率</p>
-                                        </div>
-                                        <div class="detail-stat">
-                                            <p class="detail-stat__value">-1h/日</p>
-                                            <p class="detail-stat__label">作業時間削減</p>
-                                        </div>
+                                        <div class="detail-stat"><p class="detail-stat__value">2倍</p><p class="detail-stat__label">売上向上事例</p></div>
+                                        <div class="detail-stat"><p class="detail-stat__value">3倍</p><p class="detail-stat__label">紹介成功率</p></div>
+                                        <div class="detail-stat"><p class="detail-stat__value">-1h/日</p><p class="detail-stat__label">作業削減</p></div>
                                     </div>
-                                    <p class="detail-section-title detail-section-title--green" style="margin-top: 1.5rem;">PRICING</p>
+                                    <p class="detail-section-title" style="margin-top: 1.5rem;">Pricing</p>
                                     <div class="detail-price">初期費用なし ／ 月額 <strong>3万円〜</strong></div>
-                                    <br><a href="https://meishi.figma.site/" target="_blank" rel="noopener" class="detail-url" style="color:#059669;">&#8599; 詳細サイトを見る</a>
-                                    <p style="margin-top: 0.75rem; font-size: 0.8rem; color: #64748b;">対象: 地方中小企業、士業、保険・建設など紹介営業中心の事業者</p>
+                                    <br><a href="https://meishi.figma.site/" target="_blank" rel="noopener" class="detail-url">&#8599; 詳細サイトを見る</a>
+                                    <p style="margin-top: 0.75rem; font-size: 0.8rem; color: #999; font-weight: 300;">対象: 地方中小企業、士業、保険・建設など紹介営業中心の事業者</p>
                                 </div>
                             </div>
                         </div>
@@ -462,38 +1654,29 @@
                         <div class="product-detail__inner">
                             <div class="detail-grid">
                                 <div>
-                                    <p class="detail-section-title detail-section-title--purple">FEATURES - 主要機能</p>
+                                    <p class="detail-section-title">Features</p>
                                     <ul class="detail-features">
                                         <li>条件指定で300〜350件の企業リストを自動生成</li>
                                         <li>初回メール・FAXを自動送付（毎朝9時完了）</li>
                                         <li>日次レポートで成果をリアルタイム可視化</li>
                                         <li>人の2〜4時間作業を完全代替</li>
                                     </ul>
-                                    <div class="detail-diff detail-diff--purple" style="margin-top: 1.25rem;">
-                                        <p class="detail-section-title detail-section-title--purple">DIFFERENTIATOR - 差別化ポイント</p>
+                                    <div class="detail-diff" style="margin-top: 1.25rem;">
+                                        <p class="detail-section-title">Differentiator</p>
                                         毎朝9時にリスト作成から初回送信まで完了。人手を一切使わず、初回接点100%実行を実現。
                                     </div>
                                 </div>
                                 <div>
-                                    <p class="detail-section-title detail-section-title--purple">RESULTS - 効果・実績</p>
+                                    <p class="detail-section-title">Results</p>
                                     <div class="detail-stats">
-                                        <div class="detail-stat">
-                                            <p class="detail-stat__value">6〜10倍</p>
-                                            <p class="detail-stat__label">営業母数</p>
-                                        </div>
-                                        <div class="detail-stat">
-                                            <p class="detail-stat__value">0h</p>
-                                            <p class="detail-stat__label">作業時間</p>
-                                        </div>
-                                        <div class="detail-stat">
-                                            <p class="detail-stat__value">100%</p>
-                                            <p class="detail-stat__label">初回接点実行</p>
-                                        </div>
+                                        <div class="detail-stat"><p class="detail-stat__value">6〜10倍</p><p class="detail-stat__label">営業母数</p></div>
+                                        <div class="detail-stat"><p class="detail-stat__value">0h</p><p class="detail-stat__label">作業時間</p></div>
+                                        <div class="detail-stat"><p class="detail-stat__value">100%</p><p class="detail-stat__label">接点実行</p></div>
                                     </div>
-                                    <p class="detail-section-title detail-section-title--purple" style="margin-top: 1.5rem;">PRICING</p>
+                                    <p class="detail-section-title" style="margin-top: 1.5rem;">Pricing</p>
                                     <div class="detail-price">初期 <strong>50万円</strong> ／ 月額 <strong>3万円</strong></div>
-                                    <br><a href="https://eigyolist.figma.site/" target="_blank" rel="noopener" class="detail-url" style="color:#7c3aed;">&#8599; 詳細サイトを見る</a>
-                                    <p style="margin-top: 0.75rem; font-size: 0.8rem; color: #64748b;">対象: 中小企業、1人社長、営業人材不足の企業</p>
+                                    <br><a href="https://eigyolist.figma.site/" target="_blank" rel="noopener" class="detail-url">&#8599; 詳細サイトを見る</a>
+                                    <p style="margin-top: 0.75rem; font-size: 0.8rem; color: #999; font-weight: 300;">対象: 中小企業、1人社長、営業人材不足の企業</p>
                                 </div>
                             </div>
                         </div>
@@ -506,82 +1689,69 @@
         <!-- ===== Lシンク 別枠セクション ===== -->
         <section class="lsync">
             <div class="container">
-                <p class="section-label fade-in text-center">Plus One</p>
-                <h2 class="section-title fade-in text-center">LINE営業を、もう1つのAIで強化</h2>
-                <p class="section-subtitle fade-in text-center mx-auto">
-                    3つのAIに加えて、一対一のLINE営業を自動化する「Lシンク」。営業マン本人の思考・言い回しをAI化し、24時間のLINE対応を実現します。
+                <p class="section-label fade-in">Plus One</p>
+                <h2 class="section-title fade-in">LINE営業を、もう1つのAIで強化</h2>
+                <p class="section-lead fade-in">
+                    3つのAIに加えて、一対一のLINE営業を自動化する「Lシンク」。<br>
+                    営業マン本人の思考・言い回しをAI化し、24時間のLINE対応を実現します。
                 </p>
-                <div class="lsync-card fade-in">
-                    <div class="lsync-card__header">
-                        <span class="lsync-card__badge">PLUS ONE SERVICE</span>
-                        <h3 class="lsync-card__title">Lシンク</h3>
-                        <p class="lsync-card__catch">営業マン本人の思考をAI化し、LINE対応を24時間自動化</p>
-                    </div>
-                    <div class="lsync-card__body">
-                        <div class="lsync-features">
-                            <div class="lsync-feature">
-                                <div class="lsync-feature__icon">&#128172;</div>
-                                <div class="lsync-feature__text">
-                                    <strong>LINE自動応答</strong>
-                                    <span>シナリオ型ではなく、営業マン本人をAI分身化</span>
-                                </div>
-                            </div>
-                            <div class="lsync-feature">
-                                <div class="lsync-feature__icon">&#129504;</div>
-                                <div class="lsync-feature__text">
-                                    <strong>営業思考学習</strong>
-                                    <span>本人の思考・言い回しを学習し自然文を生成</span>
-                                </div>
-                            </div>
-                            <div class="lsync-feature">
-                                <div class="lsync-feature__icon">&#128218;</div>
-                                <div class="lsync-feature__text">
-                                    <strong>顧客DB参照</strong>
-                                    <span>顧客情報を参照し、個別最適な文章を生成</span>
-                                </div>
-                            </div>
-                            <div class="lsync-feature">
-                                <div class="lsync-feature__icon">&#127760;</div>
-                                <div class="lsync-feature__text">
-                                    <strong>24時間対応</strong>
-                                    <span>深夜・休日の機会損失をゼロに</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="lsync-diff">
-                            <p class="lsync-diff__title">DIFFERENTIATOR</p>
-                            <p class="lsync-diff__text">シナリオ型ではなく営業マン本人をAI分身化。顧客情報 × 思考学習で、毎回異なる自然な文章を生成。対応人数無制限で、営業ノウハウの属人化・退職リスクも解消します。</p>
-                        </div>
-                        <div class="lsync-bottom">
-                            <div class="lsync-price">初期 <strong>5万円</strong> ／ 月額 <strong>3万円〜</strong></div>
-                            <div class="lsync-stats">
-                                <div class="lsync-stat">
-                                    <p class="lsync-stat__value">2倍</p>
-                                    <p class="lsync-stat__label">営業力</p>
-                                </div>
-                                <div class="lsync-stat">
-                                    <p class="lsync-stat__value">24h</p>
-                                    <p class="lsync-stat__label">対応</p>
-                                </div>
-                                <div class="lsync-stat">
-                                    <p class="lsync-stat__value">&#8734;</p>
-                                    <p class="lsync-stat__label">対応人数</p>
-                                </div>
-                            </div>
-                            <a href="https://lsync.figma.site/" target="_blank" rel="noopener" class="detail-url" style="color:#059669;">&#8599; 詳細サイトを見る</a>
+
+                <div class="lsync-statement fade-in">
+                    営業マン本人の思考をAI化し、<br>
+                    LINE対応を24時間自動化する。
+                </div>
+
+                <div class="lsync-features">
+                    <div class="lsync-feature fade-in fade-in-delay-1">
+                        <div class="lsync-feature__icon">1</div>
+                        <div class="lsync-feature__text">
+                            <strong>LINE自動応答</strong>
+                            <span>シナリオ型ではなく、営業マン本人をAI分身化。毎回異なる自然文を生成</span>
                         </div>
                     </div>
+                    <div class="lsync-feature fade-in fade-in-delay-1">
+                        <div class="lsync-feature__icon">2</div>
+                        <div class="lsync-feature__text">
+                            <strong>営業思考学習</strong>
+                            <span>本人の思考・言い回しを深層学習。顧客情報と掛け合わせて個別最適化</span>
+                        </div>
+                    </div>
+                    <div class="lsync-feature fade-in fade-in-delay-2">
+                        <div class="lsync-feature__icon">3</div>
+                        <div class="lsync-feature__text">
+                            <strong>顧客DB参照</strong>
+                            <span>顧客情報を参照し、一人ひとりに最適化された文章を自動生成</span>
+                        </div>
+                    </div>
+                    <div class="lsync-feature fade-in fade-in-delay-2">
+                        <div class="lsync-feature__icon">4</div>
+                        <div class="lsync-feature__text">
+                            <strong>24時間対応</strong>
+                            <span>深夜・休日の機会損失をゼロに。対応人数も無制限</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lsync-bottom fade-in">
+                    <div class="lsync-price">初期 <strong>5万円</strong> ／ 月額 <strong>3万円〜</strong></div>
+                    <div class="lsync-stats">
+                        <div class="lsync-stat"><p class="lsync-stat__value">2倍</p><p class="lsync-stat__label">営業力</p></div>
+                        <div class="lsync-stat"><p class="lsync-stat__value">24h</p><p class="lsync-stat__label">対応</p></div>
+                        <div class="lsync-stat"><p class="lsync-stat__value">&#8734;</p><p class="lsync-stat__label">対応人数</p></div>
+                    </div>
+                    <a href="https://lsync.figma.site/" target="_blank" rel="noopener" class="detail-url" style="color: rgba(255,255,255,0.6);">&#8599; 詳細サイトを見る</a>
                 </div>
             </div>
         </section>
 
-        <!-- ===== Section 3: ROIシミュレーション（③数字確認 + ④ゴール合意） ===== -->
+        <!-- ===== Section 3: ROIシミュレーション ===== -->
         <section class="roi">
             <div class="container">
-                <p class="section-label fade-in text-center">ROI Simulation</p>
-                <h2 class="section-title fade-in text-center">月たった+1件の受注で、<br>年間いくらのインパクトか？</h2>
-                <p class="section-subtitle fade-in text-center mx-auto">
-                    大きな変革ではなく、「月に1件だけ」受注が増えたら ―<br>その経済効果をシミュレーションしてみましょう。
+                <p class="section-label fade-in">ROI Simulation</p>
+                <h2 class="section-title fade-in">月たった+1件の受注で、<br>年間いくらのインパクトか？</h2>
+                <p class="section-lead fade-in">
+                    大きな変革ではなく、「月に1件だけ」受注が増えたら ―<br>
+                    その経済効果をシミュレーションしてみましょう。
                 </p>
 
                 <div class="roi-main-visual fade-in">
@@ -591,43 +1761,19 @@
                 </div>
 
                 <div class="roi-flow fade-in">
-                    <div class="roi-flow__item">
-                        <p class="roi-flow__item-label">平均受注単価</p>
-                        <p class="roi-flow__item-value">25万円</p>
-                    </div>
+                    <div class="roi-flow__item"><p class="roi-flow__item-label">平均受注単価</p><p class="roi-flow__item-value">25万円</p></div>
                     <span class="roi-flow__arrow">&times;</span>
-                    <div class="roi-flow__item">
-                        <p class="roi-flow__item-label">月間増加件数</p>
-                        <p class="roi-flow__item-value">+1件</p>
-                    </div>
+                    <div class="roi-flow__item"><p class="roi-flow__item-label">月間増加件数</p><p class="roi-flow__item-value">+1件</p></div>
                     <span class="roi-flow__arrow">&times;</span>
-                    <div class="roi-flow__item">
-                        <p class="roi-flow__item-label">12ヶ月</p>
-                        <p class="roi-flow__item-value">12</p>
-                    </div>
+                    <div class="roi-flow__item"><p class="roi-flow__item-label">12ヶ月</p><p class="roi-flow__item-value">12</p></div>
                     <span class="roi-flow__arrow">=</span>
-                    <div class="roi-flow__item roi-flow__item--result">
-                        <p class="roi-flow__item-label">年間増収</p>
-                        <p class="roi-flow__item-value">+300万円</p>
-                    </div>
+                    <div class="roi-flow__item roi-flow__item--result"><p class="roi-flow__item-label">年間増収</p><p class="roi-flow__item-value">+300万円</p></div>
                 </div>
 
                 <div class="roi-cards fade-in">
-                    <div class="roi-card">
-                        <div class="roi-card__icon">&#128200;</div>
-                        <h3 class="roi-card__title">売上1〜2割アップ</h3>
-                        <p class="roi-card__text">3つのAIが営業の入口から出口まで支援。売上1〜2割のアップは十分に現実的な目標です。</p>
-                    </div>
-                    <div class="roi-card">
-                        <div class="roi-card__icon">&#128176;</div>
-                        <h3 class="roi-card__title">年間300万円以上の可能性</h3>
-                        <p class="roi-card__text">受注単価25万円 &times; 月+1件 &times; 12ヶ月 = 300万円。単価や件数次第でさらに上振れます。</p>
-                    </div>
-                    <div class="roi-card">
-                        <div class="roi-card__icon">&#128161;</div>
-                        <h3 class="roi-card__title">月1件も増えない方が不自然</h3>
-                        <p class="roi-card__text">社長の分身が24h稼働、眠った名刺が商談化、全国リストが自動生成 ― 月1件も増えないことの方が考えにくい。</p>
-                    </div>
+                    <div class="roi-card"><h3 class="roi-card__title">売上1〜2割アップ</h3><p class="roi-card__text">3つのAIが営業の入口から出口まで支援。売上1〜2割のアップは十分に現実的な目標です。</p></div>
+                    <div class="roi-card"><h3 class="roi-card__title">年間300万円以上の可能性</h3><p class="roi-card__text">受注単価25万円 &times; 月+1件 &times; 12ヶ月 = 300万円。単価や件数次第でさらに上振れます。</p></div>
+                    <div class="roi-card"><h3 class="roi-card__title">月1件も増えない方が不自然</h3><p class="roi-card__text">社長の分身が24h稼働、眠った名刺が商談化、全国リストが自動生成 ― 月1件も増えないことの方が考えにくい。</p></div>
                 </div>
 
                 <div class="roi-bottom fade-in">
@@ -637,70 +1783,32 @@
             </div>
         </section>
 
-        <!-- ===== Section 4: 料金体系（⑤費用提示） ===== -->
+        <!-- ===== Section 4: 料金体系 ===== -->
         <section class="pricing">
             <div class="container">
-                <p class="section-label fade-in text-center">Pricing</p>
-                <h2 class="section-title fade-in text-center">明確な料金体系</h2>
-                <p class="section-subtitle fade-in text-center mx-auto">
-                    3つのAIをフルパッケージで導入した場合の料金をご案内します。
-                </p>
+                <p class="section-label fade-in">Pricing</p>
+                <h2 class="section-title fade-in">明確な料金体系</h2>
+                <p class="section-lead fade-in">3つのAIをフルパッケージで導入した場合の料金をご案内します。</p>
 
                 <div class="pricing-table fade-in">
-                    <div class="pricing-row pricing-row--header">
-                        <div class="pricing-cell">項目</div>
-                        <div class="pricing-cell">金額</div>
-                    </div>
-                    <div class="pricing-row">
-                        <div class="pricing-cell">初期費用（社長コピーAI）</div>
-                        <div class="pricing-cell">50万円</div>
-                    </div>
-                    <div class="pricing-row">
-                        <div class="pricing-cell">初期費用（名刺フォローAI）※初期費用なし</div>
-                        <div class="pricing-cell">0円</div>
-                    </div>
-                    <div class="pricing-row">
-                        <div class="pricing-cell">初期費用（営業リスト自動生成AI）</div>
-                        <div class="pricing-cell">50万円</div>
-                    </div>
-                    <div class="pricing-row pricing-row--total">
-                        <div class="pricing-cell">初期費用 合計</div>
-                        <div class="pricing-cell">100万円</div>
-                    </div>
+                    <div class="pricing-row pricing-row--header"><div class="pricing-cell">項目</div><div class="pricing-cell">金額</div></div>
+                    <div class="pricing-row"><div class="pricing-cell">初期費用（社長コピーAI）</div><div class="pricing-cell">50万円</div></div>
+                    <div class="pricing-row"><div class="pricing-cell">初期費用（名刺フォローAI）※初期費用なし</div><div class="pricing-cell">0円</div></div>
+                    <div class="pricing-row"><div class="pricing-cell">初期費用（営業リスト自動生成AI）</div><div class="pricing-cell">50万円</div></div>
+                    <div class="pricing-row pricing-row--total"><div class="pricing-cell">初期費用 合計</div><div class="pricing-cell">100万円</div></div>
                 </div>
 
                 <div class="pricing-table fade-in">
-                    <div class="pricing-row pricing-row--header">
-                        <div class="pricing-cell">月額ランニング</div>
-                        <div class="pricing-cell">金額</div>
-                    </div>
-                    <div class="pricing-row">
-                        <div class="pricing-cell">社長コピーAI 月額</div>
-                        <div class="pricing-cell">3万円/月</div>
-                    </div>
-                    <div class="pricing-row">
-                        <div class="pricing-cell">名刺フォローAI 月額</div>
-                        <div class="pricing-cell">3万円/月</div>
-                    </div>
-                    <div class="pricing-row">
-                        <div class="pricing-cell">営業リスト自動生成AI 月額</div>
-                        <div class="pricing-cell">3万円/月</div>
-                    </div>
-                    <div class="pricing-row pricing-row--total">
-                        <div class="pricing-cell">月額合計</div>
-                        <div class="pricing-cell">9万円/月</div>
-                    </div>
+                    <div class="pricing-row pricing-row--header"><div class="pricing-cell">月額ランニング</div><div class="pricing-cell">金額</div></div>
+                    <div class="pricing-row"><div class="pricing-cell">社長コピーAI 月額</div><div class="pricing-cell">3万円/月</div></div>
+                    <div class="pricing-row"><div class="pricing-cell">名刺フォローAI 月額</div><div class="pricing-cell">3万円/月</div></div>
+                    <div class="pricing-row"><div class="pricing-cell">営業リスト自動生成AI 月額</div><div class="pricing-cell">3万円/月</div></div>
+                    <div class="pricing-row pricing-row--total"><div class="pricing-cell">月額合計</div><div class="pricing-cell">9万円/月</div></div>
                 </div>
 
                 <div class="pricing-summary fade-in">
-                    <div class="pricing-summary__item">
-                        <p class="pricing-summary__label">初年度 年間コスト</p>
-                        <p class="pricing-summary__value">208<small>万円</small></p>
-                    </div>
-                    <div class="pricing-summary__item">
-                        <p class="pricing-summary__label">2年目以降 年間コスト</p>
-                        <p class="pricing-summary__value">108<small>万円</small></p>
-                    </div>
+                    <div class="pricing-summary__item"><p class="pricing-summary__label">初年度 年間コスト</p><p class="pricing-summary__value">208<small>万円</small></p></div>
+                    <div class="pricing-summary__item"><p class="pricing-summary__label">2年目以降 年間コスト</p><p class="pricing-summary__value">108<small>万円</small></p></div>
                 </div>
 
                 <p class="pricing-note fade-in" style="margin-top: 1.5rem;">
@@ -710,14 +1818,12 @@
             </div>
         </section>
 
-        <!-- ===== Section 5: コスト比較（⑥価格妥当性） ===== -->
+        <!-- ===== Section 5: コスト比較 ===== -->
         <section class="comparison">
             <div class="container">
-                <p class="section-label fade-in text-center">Cost Comparison</p>
-                <h2 class="section-title fade-in text-center">人を1人採用するよりも、安い</h2>
-                <p class="section-subtitle fade-in text-center mx-auto">
-                    営業人材1名の採用・維持コストと、AI導入コストを比較してみましょう。
-                </p>
+                <p class="section-label fade-in">Cost Comparison</p>
+                <h2 class="section-title fade-in">人を1人採用するよりも、安い</h2>
+                <p class="section-lead fade-in">営業人材1名の採用・維持コストと、AI導入コストを比較してみましょう。</p>
 
                 <div class="comparison-grid fade-in">
                     <div class="comparison-card comparison-card--ai">
@@ -755,76 +1861,65 @@
                 </div>
 
                 <div class="comparison-bottom fade-in">
-                    <div class="comparison-bottom__item">
-                        <div class="comparison-bottom__icon">&#9203;</div>
-                        <p class="comparison-bottom__text">24時間稼働</p>
-                        <p class="comparison-bottom__sub">休みなく営業活動</p>
-                    </div>
-                    <div class="comparison-bottom__item">
-                        <div class="comparison-bottom__icon">&#128170;</div>
-                        <p class="comparison-bottom__text">辞めない</p>
-                        <p class="comparison-bottom__sub">離職リスクゼロ</p>
-                    </div>
-                    <div class="comparison-bottom__item">
-                        <div class="comparison-bottom__icon">&#128202;</div>
-                        <p class="comparison-bottom__text">ノウハウ蓄積</p>
-                        <p class="comparison-bottom__sub">使うほど賢くなる</p>
-                    </div>
+                    <div class="comparison-bottom__item"><div class="comparison-bottom__number">01</div><p class="comparison-bottom__text">24時間稼働</p><p class="comparison-bottom__sub">休みなく営業活動</p></div>
+                    <div class="comparison-bottom__item"><div class="comparison-bottom__number">02</div><p class="comparison-bottom__text">辞めない</p><p class="comparison-bottom__sub">離職リスクゼロ</p></div>
+                    <div class="comparison-bottom__item"><div class="comparison-bottom__number">03</div><p class="comparison-bottom__text">ノウハウ蓄積</p><p class="comparison-bottom__sub">使うほど賢くなる</p></div>
                 </div>
             </div>
         </section>
 
-        <!-- ===== Section 6: 活用イメージ（⑦事例） ===== -->
+        <!-- ===== Section 6: 活用イメージ ===== -->
         <section class="use-cases">
             <div class="container">
-                <p class="section-label fade-in text-center">Use Cases</p>
-                <h2 class="section-title fade-in text-center">こんな成果が期待できます</h2>
-                <p class="section-subtitle fade-in text-center mx-auto">
-                    4つのAIを導入した企業で実現される、具体的な活用シーンと成果イメージをご紹介します。
+                <p class="section-label fade-in">Use Cases</p>
+                <h2 class="section-title fade-in">こんな成果が期待できます</h2>
+                <p class="section-lead fade-in">
+                    4つのAIを導入した企業で実現される、<br>
+                    具体的な活用シーンと成果イメージをご紹介します。
                 </p>
                 <div class="use-cases-grid">
-                    <div class="use-case-card fade-in fade-in-delay-1">
-                        <div class="use-case-card__number">01</div>
-                        <div class="use-case-card__body">
-                            <h3 class="use-case-card__title">社長コピーAIで公式LINE自動運用</h3>
-                            <p class="use-case-card__text">社長のトーク・ノウハウをAIが学習し、公式LINEで24時間自動対応。見込み客からの問い合わせに即座にパーソナライズ回答。</p>
-                            <p class="use-case-card__result">&#8594; 営業返信率 300%向上、「社長が直接対応してくれている」と好評</p>
+                    <div class="use-case-item fade-in">
+                        <span class="use-case-number">01</span>
+                        <div class="use-case-content">
+                            <h3>社長コピーAIで公式LINE自動運用</h3>
+                            <p>社長のトーク・ノウハウをAIが学習し、公式LINEで24時間自動対応。見込み客からの問い合わせに即座にパーソナライズ回答。</p>
+                            <p class="use-case-result">&#8594; 営業返信率 300%向上、「社長が直接対応してくれている」と好評</p>
                         </div>
                     </div>
-                    <div class="use-case-card fade-in fade-in-delay-2">
-                        <div class="use-case-card__number">02</div>
-                        <div class="use-case-card__body">
-                            <h3 class="use-case-card__title">名刺フォローAIで紹介営業を最大化</h3>
-                            <p class="use-case-card__text">展示会で交換した500枚の名刺に対し、3年間の長期フォローを自動実施。記念日通知で関係を維持し、紹介の連鎖を生む。</p>
-                            <p class="use-case-card__result">&#8594; 紹介成功率3倍、1日1時間以上の作業削減</p>
+                    <div class="use-case-item fade-in">
+                        <span class="use-case-number">02</span>
+                        <div class="use-case-content">
+                            <h3>名刺フォローAIで紹介営業を最大化</h3>
+                            <p>展示会で交換した500枚の名刺に対し、3年間の長期フォローを自動実施。記念日通知で関係を維持し、紹介の連鎖を生む。</p>
+                            <p class="use-case-result">&#8594; 紹介成功率3倍、1日1時間以上の作業削減</p>
                         </div>
                     </div>
-                    <div class="use-case-card fade-in fade-in-delay-1">
-                        <div class="use-case-card__number">03</div>
-                        <div class="use-case-card__body">
-                            <h3 class="use-case-card__title">営業リストAIで新規開拓を自動化</h3>
-                            <p class="use-case-card__text">毎朝9時に300件のリスト生成＋メール送付が完了。日次レポートで反応を確認し、有望リードだけに集中。</p>
-                            <p class="use-case-card__result">&#8594; 営業母数6〜10倍、作業時間ゼロ、初回接点100%実行</p>
+                    <div class="use-case-item fade-in">
+                        <span class="use-case-number">03</span>
+                        <div class="use-case-content">
+                            <h3>営業リストAIで新規開拓を自動化</h3>
+                            <p>毎朝9時に300件のリスト生成＋メール送付が完了。日次レポートで反応を確認し、有望リードだけに集中。</p>
+                            <p class="use-case-result">&#8594; 営業母数6〜10倍、作業時間ゼロ、初回接点100%実行</p>
                         </div>
                     </div>
-                    <div class="use-case-card fade-in fade-in-delay-2">
-                        <div class="use-case-card__number">04</div>
-                        <div class="use-case-card__body">
-                            <h3 class="use-case-card__title">LシンクでLINE営業を24時間化</h3>
-                            <p class="use-case-card__text">営業マンの思考・言い回しをAIが学習。深夜・休日でも顧客ごとに最適化されたLINE対応を自動で行い、機会損失をゼロに。</p>
-                            <p class="use-case-card__result">&#8594; 営業力2倍、対応人数無制限、属人リスク解消</p>
+                    <div class="use-case-item fade-in">
+                        <span class="use-case-number">04</span>
+                        <div class="use-case-content">
+                            <h3>LシンクでLINE営業を24時間化</h3>
+                            <p>営業マンの思考・言い回しをAIが学習。深夜・休日でも顧客ごとに最適化されたLINE対応を自動で行い、機会損失をゼロに。</p>
+                            <p class="use-case-result">&#8594; 営業力2倍、対応人数無制限、属人リスク解消</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- ===== Section 7: 導入プラン（⑧クロージング） ===== -->
+        <!-- ===== Section 7: 導入プラン（クロージング） ===== -->
         <section class="closing">
             <div class="container">
-                <p class="section-label fade-in text-center">Implementation Plan</p>
-                <h2 class="section-title fade-in text-center">2つの導入プラン</h2>
-                <p class="section-subtitle fade-in text-center mx-auto">
+                <p class="section-label fade-in">Implementation Plan</p>
+                <h2 class="section-title fade-in">2つの導入プラン</h2>
+                <p class="section-lead fade-in">
                     御社の状況に合わせて、最適なスタート方法をお選びいただけます。
                 </p>
 
@@ -892,7 +1987,7 @@
                             observer.unobserve(entry.target);
                         }
                     });
-                }, { threshold: 0.12 });
+                }, { threshold: 0.15 });
                 targets.forEach(function (target) { observer.observe(target); });
             } else {
                 targets.forEach(function (target) { target.classList.add("is-visible"); });
@@ -906,7 +2001,6 @@
                     var detail = document.getElementById(targetId);
                     var isActive = this.classList.contains("is-active");
 
-                    // 他のカードを閉じる
                     cards.forEach(function (c) {
                         c.classList.remove("is-active");
                         var otherId = c.getAttribute("data-target");
@@ -917,7 +2011,6 @@
                         }
                     });
 
-                    // トグル
                     if (isActive) {
                         this.classList.remove("is-active");
                         detail.style.maxHeight = "0";
@@ -926,7 +2019,6 @@
                         this.classList.add("is-active");
                         detail.classList.add("is-open");
                         detail.style.maxHeight = detail.scrollHeight + "px";
-                        // スクロール位置を調整
                         setTimeout(function () {
                             detail.scrollIntoView({ behavior: "smooth", block: "nearest" });
                         }, 300);
