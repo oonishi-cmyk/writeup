@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI営業支援ソリューション | 株式会社ライトアップ</title>
+    <link rel="icon" href="../ファビコン.svg" type="image/svg+xml">
+    <link rel="icon" href="../ファビコン.png" type="image/png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* ===== リセット & ベース ===== */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { font-size: 16px; scroll-behavior: smooth; }
+        body {
+            font-family: "Noto Sans JP", "Hiragino Kaku Gothic ProN", "Yu Gothic", "Meiryo", sans-serif;
+            font-weight: 400; line-height: 1.8; color: #1a1a2e; background-color: #ffffff;
+            -webkit-font-smoothing: antialiased; overflow-x: hidden;
+        }
+        img { max-width: 100%; height: auto; display: block; }
+
+        /* ===== スクロールアニメーション ===== */
+        .fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+        .fade-in.is-visible { opacity: 1; transform: translateY(0); }
+        .fade-in-delay-1 { transition-delay: 0.15s; }
+        .fade-in-delay-2 { transition-delay: 0.3s; }
+        .fade-in-delay-3 { transition-delay: 0.45s; }
+
+        /* ===== ユーティリティ ===== */
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; }
+        .section-label { font-size: 0.75rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 0.75rem; color: #2563EB; }
+        .section-title { font-size: 1.75rem; font-weight: 700; letter-spacing: 0.04em; margin-bottom: 1rem; line-height: 1.5; }
+        .section-subtitle { font-size: 1rem; color: #64748b; line-height: 1.9; margin-bottom: 3rem; max-width: 700px; }
+        .text-center { text-align: center; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+
+        /* ===== Section 1: ヒーロー ===== */
+        .hero {
+            position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0f2847 100%); overflow: hidden; padding: 4rem 0;
+        }
+        .hero::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(circle, rgba(37,99,235,0.08) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; }
+        .hero::after { content: ""; position: absolute; top: -20%; right: -10%; width: 600px; height: 600px; background: radial-gradient(circle, rgba(37,99,235,0.12) 0%, transparent 70%); border-radius: 50%; pointer-events: none; }
+        .hero-glow { position: absolute; bottom: -15%; left: -10%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(16,185,129,0.08) 0%, transparent 70%); border-radius: 50%; pointer-events: none; }
+        .hero .container { position: relative; z-index: 1; text-align: center; }
+        .hero-logo { height: 36px; width: auto; margin: 0 auto 3rem; filter: brightness(0) invert(1); opacity: 0.9; }
+        .hero-label { display: inline-block; font-size: 0.8rem; font-weight: 500; letter-spacing: 0.25em; color: #60a5fa; margin-bottom: 2rem; padding: 0.4rem 1.2rem; border: 1px solid rgba(96,165,250,0.3); border-radius: 100px; }
+        .hero-title { font-size: 2.5rem; font-weight: 900; color: #ffffff; letter-spacing: 0.06em; line-height: 1.6; margin-bottom: 2rem; }
+        .hero-title span { background: linear-gradient(90deg, #60a5fa, #34d399); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero-accent-line { width: 60px; height: 3px; background: linear-gradient(90deg, #2563EB, #10b981); margin: 0 auto 2rem; border-radius: 2px; }
+        .hero-sub { font-size: 1.1rem; font-weight: 300; color: rgba(255,255,255,0.6); line-height: 2; max-width: 600px; margin: 0 auto; }
+        .hero-sub strong { color: rgba(255,255,255,0.9); font-weight: 500; }
+
+        /* ===== Section 2: 3つのAI製品紹介 ===== */
+        .products { position: relative; padding: 6rem 0; background: #f8fafc; }
+        .products-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+
+        .product-card {
+            position: relative; padding: 2.5rem 2rem; background: #ffffff; border: 1px solid #e2e8f0;
+            border-radius: 16px; box-shadow: 0 4px 24px rgba(0,0,0,0.04); cursor: pointer;
+            transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease; overflow: hidden;
+        }
+        .product-card:hover { box-shadow: 0 12px 40px rgba(37,99,235,0.1); transform: translateY(-4px); }
+        .product-card.is-active { border-color: #2563EB; box-shadow: 0 12px 40px rgba(37,99,235,0.15); transform: translateY(0); }
+
+        .product-card__icon { width: 56px; height: 56px; border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
+        .product-card--1 .product-card__icon { background: linear-gradient(135deg, #2563EB, #3b82f6); color: #fff; }
+        .product-card--2 .product-card__icon { background: linear-gradient(135deg, #10b981, #34d399); color: #fff; }
+        .product-card--3 .product-card__icon { background: linear-gradient(135deg, #8b5cf6, #a78bfa); color: #fff; }
+
+        .product-card__badge { display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; padding: 0.25rem 0.75rem; border-radius: 100px; margin-bottom: 1rem; }
+        .product-card--1 .product-card__badge { background: rgba(37,99,235,0.08); color: #2563EB; }
+        .product-card--2 .product-card__badge { background: rgba(16,185,129,0.08); color: #059669; }
+        .product-card--3 .product-card__badge { background: rgba(139,92,246,0.08); color: #7c3aed; }
+
+        .product-card__title { font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem; letter-spacing: 0.03em; }
+        .product-card__catch { font-size: 0.9rem; font-weight: 500; color: #475569; margin-bottom: 1rem; line-height: 1.6; }
+        .product-card__text { font-size: 0.9rem; color: #64748b; line-height: 1.8; }
+        .product-card__highlight { margin-top: 1.25rem; padding: 0.75rem 1rem; background: #f1f5f9; border-radius: 8px; font-size: 0.85rem; font-weight: 500; color: #334155; display: flex; align-items: center; gap: 0.5rem; }
+        .product-card__highlight::before { content: ""; width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+        .product-card--1 .product-card__highlight::before { background: #2563EB; }
+        .product-card--2 .product-card__highlight::before { background: #10b981; }
+        .product-card--3 .product-card__highlight::before { background: #8b5cf6; }
+
+        .product-card__toggle { margin-top: 1.25rem; display: flex; align-items: center; gap: 0.5rem; font-size: 0.8rem; font-weight: 700; color: #2563EB; letter-spacing: 0.03em; }
+        .product-card--2 .product-card__toggle { color: #059669; }
+        .product-card--3 .product-card__toggle { color: #7c3aed; }
+        .product-card__toggle-arrow { transition: transform 0.3s ease; display: inline-block; }
+        .product-card.is-active .product-card__toggle-arrow { transform: rotate(180deg); }
+
+        /* 詳細展開パネル */
+        .product-detail { max-height: 0; overflow: hidden; transition: max-height 0.5s ease, opacity 0.4s ease; opacity: 0; grid-column: 1 / -1; }
+        .product-detail.is-open { opacity: 1; }
+        .product-detail__inner { padding: 2rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 16px; margin-top: -0.5rem; }
+
+        .detail-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+
+        .detail-features { list-style: none; }
+        .detail-features li { position: relative; padding: 0.6rem 0 0.6rem 1.75rem; font-size: 0.9rem; color: #334155; line-height: 1.7; border-bottom: 1px solid #f1f5f9; }
+        .detail-features li:last-child { border-bottom: none; }
+        .detail-features li::before { content: ""; position: absolute; left: 0; top: 0.9rem; width: 10px; height: 5px; border-left: 2px solid #2563EB; border-bottom: 2px solid #2563EB; transform: rotate(-45deg); }
+
+        .detail-section-title { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 0.75rem; }
+        .detail-section-title--blue { color: #2563EB; }
+        .detail-section-title--green { color: #059669; }
+        .detail-section-title--purple { color: #7c3aed; }
+
+        .detail-diff { padding: 1.25rem; background: #f8fafc; border-radius: 12px; border-left: 4px solid #2563EB; font-size: 0.9rem; color: #334155; line-height: 1.8; }
+        .detail-diff--green { border-left-color: #10b981; }
+        .detail-diff--purple { border-left-color: #8b5cf6; }
+
+        .detail-stats { display: flex; flex-wrap: wrap; gap: 1rem; }
+        .detail-stat { flex: 1; min-width: 120px; text-align: center; padding: 1rem; background: linear-gradient(135deg, #eff6ff, #f0fdf4); border-radius: 12px; }
+        .detail-stat__value { font-size: 1.5rem; font-weight: 900; color: #1e293b; }
+        .detail-stat__label { font-size: 0.75rem; color: #64748b; font-weight: 500; }
+
+        .detail-price { display: inline-flex; align-items: baseline; gap: 0.5rem; padding: 0.75rem 1.25rem; background: #1e293b; color: #fff; border-radius: 8px; font-size: 0.9rem; font-weight: 500; }
+        .detail-price strong { font-size: 1.1rem; font-weight: 900; }
+
+        .detail-url { display: inline-flex; align-items: center; gap: 0.35rem; margin-top: 0.75rem; font-size: 0.8rem; color: #2563EB; text-decoration: none; font-weight: 500; }
+        .detail-url:hover { text-decoration: underline; }
+
+        /* ===== Lシンク 別枠セクション ===== */
+        .lsync { position: relative; padding: 5rem 0; background: #ffffff; }
+        .lsync-card {
+            max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 0;
+            background: #ffffff; border-radius: 20px; border: 1px solid #e2e8f0; box-shadow: 0 8px 32px rgba(0,0,0,0.06); overflow: hidden;
+        }
+        .lsync-card__header { background: linear-gradient(135deg, #064e3b, #065f46); padding: 2.5rem; color: #fff; }
+        .lsync-card__badge { display: inline-block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; padding: 0.3rem 0.8rem; border-radius: 100px; background: rgba(52,211,153,0.2); color: #6ee7b7; margin-bottom: 1rem; }
+        .lsync-card__title { font-size: 1.5rem; font-weight: 900; margin-bottom: 0.5rem; }
+        .lsync-card__catch { font-size: 1rem; color: rgba(255,255,255,0.7); font-weight: 400; }
+        .lsync-card__body { padding: 2.5rem; }
+
+        .lsync-features { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; margin-bottom: 2rem; }
+        .lsync-feature { display: flex; gap: 0.75rem; align-items: flex-start; }
+        .lsync-feature__icon { flex-shrink: 0; width: 36px; height: 36px; border-radius: 8px; background: #ecfdf5; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+        .lsync-feature__text { flex: 1; }
+        .lsync-feature__text strong { display: block; font-size: 0.85rem; font-weight: 700; color: #1e293b; margin-bottom: 0.15rem; }
+        .lsync-feature__text span { font-size: 0.8rem; color: #64748b; line-height: 1.6; }
+
+        .lsync-diff { padding: 1.25rem; background: #ecfdf5; border-radius: 12px; border-left: 4px solid #10b981; margin-bottom: 1.5rem; }
+        .lsync-diff__title { font-size: 0.8rem; font-weight: 700; color: #059669; letter-spacing: 0.05em; margin-bottom: 0.5rem; }
+        .lsync-diff__text { font-size: 0.9rem; color: #334155; line-height: 1.8; }
+
+        .lsync-bottom { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; }
+        .lsync-price { padding: 0.75rem 1.25rem; background: #1e293b; color: #fff; border-radius: 8px; font-size: 0.9rem; font-weight: 500; }
+        .lsync-price strong { font-size: 1.1rem; font-weight: 900; }
+        .lsync-stats { display: flex; gap: 1.5rem; }
+        .lsync-stat { text-align: center; }
+        .lsync-stat__value { font-size: 1.25rem; font-weight: 900; color: #059669; }
+        .lsync-stat__label { font-size: 0.7rem; color: #64748b; }
+
+        /* ===== Section 3: ROIシミュレーション ===== */
+        .roi { position: relative; padding: 6rem 0; background: #f8fafc; }
+        .roi-main-visual { text-align: center; margin-bottom: 3rem; padding: 3rem 2rem; background: linear-gradient(135deg, #eff6ff, #f0fdf4); border-radius: 20px; border: 1px solid #dbeafe; }
+        .roi-main-visual__label { font-size: 0.85rem; font-weight: 500; color: #2563EB; margin-bottom: 0.5rem; }
+        .roi-main-visual__number { font-size: 3.5rem; font-weight: 900; color: #1e293b; line-height: 1.2; letter-spacing: -0.02em; }
+        .roi-main-visual__number span { background: linear-gradient(90deg, #2563EB, #10b981); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .roi-main-visual__sub { font-size: 1rem; color: #64748b; margin-top: 0.5rem; }
+
+        .roi-flow { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.75rem; margin-bottom: 3rem; }
+        .roi-flow__item { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 1.25rem 1.5rem; text-align: center; min-width: 140px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .roi-flow__item-label { font-size: 0.75rem; color: #94a3b8; font-weight: 500; margin-bottom: 0.25rem; }
+        .roi-flow__item-value { font-size: 1.5rem; font-weight: 900; color: #1e293b; }
+        .roi-flow__arrow { font-size: 1.5rem; color: #cbd5e1; font-weight: 300; }
+        .roi-flow__item--result { background: linear-gradient(135deg, #2563EB, #1d4ed8); border-color: #2563EB; }
+        .roi-flow__item--result .roi-flow__item-label { color: rgba(255,255,255,0.7); }
+        .roi-flow__item--result .roi-flow__item-value { color: #fff; }
+
+        .roi-cards { display: grid; grid-template-columns: 1fr; gap: 1.25rem; margin-bottom: 2.5rem; }
+        .roi-card { padding: 2rem; border-radius: 12px; border: 1px solid #e2e8f0; background: #ffffff; }
+        .roi-card__icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+        .roi-card__title { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .roi-card__text { font-size: 0.9rem; color: #64748b; line-height: 1.8; }
+        .roi-bottom { text-align: center; padding: 2rem; background: #f0fdf4; border-radius: 12px; border: 1px solid #bbf7d0; }
+        .roi-bottom__text { font-size: 1.15rem; font-weight: 700; color: #059669; line-height: 1.8; }
+        .roi-bottom__sub { font-size: 0.85rem; color: #64748b; margin-top: 0.5rem; }
+
+        /* ===== Section 4: 料金体系 ===== */
+        .pricing { position: relative; padding: 6rem 0; background: #ffffff; }
+        .pricing-table { max-width: 800px; margin: 0 auto 2.5rem; }
+        .pricing-row { display: flex; align-items: stretch; border-bottom: 1px solid #e2e8f0; }
+        .pricing-row:last-child { border-bottom: none; }
+        .pricing-row--header { background: #1e293b; border-radius: 12px 12px 0 0; border-bottom: none; }
+        .pricing-row--header .pricing-cell { color: #fff; font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em; }
+        .pricing-row--total { background: linear-gradient(135deg, #eff6ff, #f0fdf4); border-radius: 0 0 12px 12px; }
+        .pricing-cell { padding: 1.25rem 1.5rem; font-size: 0.95rem; display: flex; align-items: center; }
+        .pricing-cell:first-child { flex: 1; font-weight: 500; }
+        .pricing-cell:last-child { width: 220px; justify-content: flex-end; font-weight: 700; font-size: 1.1rem; }
+        .pricing-row--total .pricing-cell:last-child { color: #2563EB; font-size: 1.25rem; }
+        .pricing-row:not(.pricing-row--header):not(.pricing-row--total) { background: #fff; }
+        .pricing-note { font-size: 0.85rem; color: #94a3b8; text-align: center; }
+        .pricing-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; max-width: 600px; margin: 2.5rem auto 0; }
+        .pricing-summary__item { text-align: center; padding: 1.5rem; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .pricing-summary__label { font-size: 0.8rem; color: #94a3b8; font-weight: 500; margin-bottom: 0.25rem; }
+        .pricing-summary__value { font-size: 1.75rem; font-weight: 900; color: #1e293b; }
+        .pricing-summary__value small { font-size: 0.85rem; font-weight: 500; color: #64748b; }
+
+        /* ===== Section 5: コスト比較 ===== */
+        .comparison { position: relative; padding: 6rem 0; background: #f8fafc; }
+        .comparison-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; max-width: 900px; margin: 0 auto 3rem; }
+        .comparison-card { padding: 2.5rem 2rem; border-radius: 16px; position: relative; }
+        .comparison-card--ai { background: linear-gradient(135deg, #eff6ff, #f0fdf4); border: 2px solid #2563EB; }
+        .comparison-card--human { background: #ffffff; border: 1px solid #e2e8f0; }
+        .comparison-card__recommend { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: linear-gradient(90deg, #2563EB, #10b981); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 0.3rem 1rem; border-radius: 100px; letter-spacing: 0.05em; white-space: nowrap; }
+        .comparison-card__title { font-size: 1.15rem; font-weight: 700; margin-bottom: 1.5rem; text-align: center; }
+        .comparison-card__price { text-align: center; margin-bottom: 1.5rem; }
+        .comparison-card__price-label { font-size: 0.8rem; color: #94a3b8; font-weight: 500; }
+        .comparison-card__price-value { font-size: 2.5rem; font-weight: 900; color: #1e293b; line-height: 1.2; }
+        .comparison-card--ai .comparison-card__price-value { color: #2563EB; }
+        .comparison-card__price-unit { font-size: 0.85rem; color: #64748b; }
+        .comparison-card__list { list-style: none; }
+        .comparison-card__list li { position: relative; padding: 0.5rem 0 0.5rem 1.75rem; font-size: 0.9rem; color: #475569; line-height: 1.7; }
+        .comparison-card__list li::before { content: ""; position: absolute; left: 0; top: 0.85rem; width: 16px; height: 16px; border-radius: 50%; }
+        .comparison-card--ai .comparison-card__list li::before { background: #10b981; box-shadow: inset 0 0 0 3px #fff; }
+        .comparison-card--human .comparison-card__list li::before { background: #f87171; box-shadow: inset 0 0 0 3px #fff; }
+        .comparison-card__vs { display: none; }
+        .comparison-bottom { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; max-width: 700px; margin: 0 auto; }
+        .comparison-bottom__item { text-align: center; padding: 1.5rem 1rem; background: #f0fdf4; border-radius: 12px; border: 1px solid #bbf7d0; }
+        .comparison-bottom__icon { font-size: 1.75rem; margin-bottom: 0.5rem; }
+        .comparison-bottom__text { font-size: 0.9rem; font-weight: 700; color: #059669; }
+        .comparison-bottom__sub { font-size: 0.75rem; color: #64748b; margin-top: 0.25rem; }
+
+        /* ===== Section 6: 活用イメージ ===== */
+        .use-cases { position: relative; padding: 6rem 0; background: #ffffff; }
+        .use-cases-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; max-width: 900px; margin: 0 auto; }
+        .use-case-card { padding: 2rem; background: #f8fafc; border-radius: 16px; border: 1px solid #e2e8f0; display: flex; gap: 1.25rem; align-items: flex-start; }
+        .use-case-card__number { flex-shrink: 0; width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #2563EB, #3b82f6); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 900; }
+        .use-case-card__body { flex: 1; }
+        .use-case-card__title { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .use-case-card__text { font-size: 0.9rem; color: #64748b; line-height: 1.8; }
+        .use-case-card__result { margin-top: 0.75rem; font-size: 0.85rem; font-weight: 700; color: #059669; }
+
+        /* ===== Section 7: 導入プラン ===== */
+        .closing { position: relative; padding: 6rem 0; background: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #0f2847 100%); color: #fff; overflow: hidden; }
+        .closing::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(circle, rgba(37,99,235,0.06) 1px, transparent 1px); background-size: 48px 48px; pointer-events: none; }
+        .closing .container { position: relative; z-index: 1; }
+        .closing .section-label { color: #60a5fa; }
+        .closing .section-title { color: #fff; }
+        .closing .section-subtitle { color: rgba(255,255,255,0.5); }
+        .plan-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; max-width: 900px; margin: 0 auto 3rem; }
+        .plan-card { padding: 2.5rem 2rem; border-radius: 16px; position: relative; transition: transform 0.3s ease; }
+        .plan-card:hover { transform: translateY(-4px); }
+        .plan-card--a { background: rgba(37,99,235,0.12); border: 2px solid rgba(37,99,235,0.4); }
+        .plan-card--b { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); }
+        .plan-card__recommend { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: linear-gradient(90deg, #2563EB, #10b981); color: #fff; font-size: 0.75rem; font-weight: 700; padding: 0.3rem 1.2rem; border-radius: 100px; letter-spacing: 0.08em; white-space: nowrap; }
+        .plan-card__name { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; color: #60a5fa; margin-bottom: 0.5rem; }
+        .plan-card--b .plan-card__name { color: rgba(255,255,255,0.5); }
+        .plan-card__title { font-size: 1.35rem; font-weight: 700; margin-bottom: 1.25rem; }
+        .plan-card__list { list-style: none; margin-bottom: 1.5rem; }
+        .plan-card__list li { position: relative; padding: 0.4rem 0 0.4rem 1.5rem; font-size: 0.9rem; color: rgba(255,255,255,0.75); line-height: 1.7; }
+        .plan-card__list li::before { content: ""; position: absolute; left: 0; top: 0.75rem; width: 8px; height: 4px; border-left: 2px solid #60a5fa; border-bottom: 2px solid #60a5fa; transform: rotate(-45deg); }
+        .plan-card--b .plan-card__list li::before { border-color: rgba(255,255,255,0.35); }
+        .plan-card__merit { padding: 1rem 1.25rem; border-radius: 8px; font-size: 0.85rem; font-weight: 500; line-height: 1.7; }
+        .plan-card--a .plan-card__merit { background: rgba(37,99,235,0.15); color: #93c5fd; }
+        .plan-card--b .plan-card__merit { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.5); }
+        .closing-cta { text-align: center; padding: 2.5rem 2rem; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; background: rgba(255,255,255,0.03); max-width: 700px; margin: 0 auto; }
+        .closing-cta__text { font-size: 1.15rem; font-weight: 700; color: #fff; line-height: 1.9; margin-bottom: 0.75rem; }
+        .closing-cta__sub { font-size: 0.9rem; color: rgba(255,255,255,0.45); line-height: 1.8; }
+
+        /* ===== フッター ===== */
+        .site-footer { background: #0a0f1a; padding: 3rem 0; text-align: center; }
+        .site-footer__logo { height: 24px; width: auto; margin: 0 auto 1.25rem; filter: brightness(0) invert(1); opacity: 0.6; }
+        .site-footer__company { font-size: 0.8rem; color: rgba(255,255,255,0.3); margin-bottom: 0.5rem; }
+        .site-footer__copyright { font-size: 0.7rem; color: rgba(255,255,255,0.15); letter-spacing: 0.05em; }
+
+        /* ===== レスポンシブ: タブレット (768px+) ===== */
+        @media (min-width: 768px) {
+            .hero-title { font-size: 3rem; }
+            .section-title { font-size: 2rem; }
+            .products-grid { grid-template-columns: repeat(3, 1fr); }
+            .roi-main-visual__number { font-size: 4.5rem; }
+            .roi-cards { grid-template-columns: repeat(3, 1fr); }
+            .comparison-grid { grid-template-columns: 1fr 1fr; position: relative; }
+            .comparison-card__vs { display: flex; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 48px; height: 48px; background: #1e293b; border: 2px solid #e2e8f0; border-radius: 50%; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 900; color: #fff; z-index: 2; }
+            .plan-grid { grid-template-columns: 1fr 1fr; }
+            .detail-grid { grid-template-columns: 1fr 1fr; }
+            .lsync-card { grid-template-columns: 2fr 3fr; }
+            .lsync-features { grid-template-columns: 1fr 1fr; }
+            .use-cases-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        /* ===== レスポンシブ: PC (1024px+) ===== */
+        @media (min-width: 1024px) {
+            .hero-title { font-size: 3.5rem; }
+            .products, .roi, .pricing, .comparison, .use-cases, .closing, .lsync { padding: 7rem 0; }
+            .section-title { font-size: 2.25rem; }
+            .product-card { padding: 2.5rem; }
+            .comparison-card { padding: 3rem 2.5rem; }
+            .plan-card { padding: 3rem 2.5rem; }
+        }
+
+        /* ===== 画面共有最適化: 大画面 (1920px) ===== */
+        @media (min-width: 1400px) {
+            .container { max-width: 1300px; }
+            .hero-title { font-size: 4rem; }
+            .section-title { font-size: 2.5rem; }
+            .roi-main-visual__number { font-size: 5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <main>
+
+        <!-- ===== Section 1: ヒーロー（①挨拶） ===== -->
+        <section class="hero">
+            <div class="hero-glow"></div>
+            <div class="container">
+                <img src="../ロゴ.svg" alt="WriteUp!" class="hero-logo fade-in">
+                <p class="hero-label fade-in">AI Sales Solution</p>
+                <h1 class="hero-title fade-in">
+                    <span>AIで、売上を構造化する。</span>
+                </h1>
+                <div class="hero-accent-line fade-in"></div>
+                <p class="hero-sub fade-in">
+                    <strong>3つのAI + Lシンク</strong>が、御社の営業プロセスを革新。<br>
+                    社長の分身をつくり、名刺を商談に変え、<br>
+                    全国への営業を自動化する ―<br>
+                    <strong>売上2倍</strong>への道筋を、ご提案します。
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== Section 2: 3つのAI製品紹介（②ウェビナー内容の代弁） ===== -->
+        <section class="products">
+            <div class="container">
+                <p class="section-label fade-in text-center">3 AI Products</p>
+                <h2 class="section-title fade-in text-center">売上を構造化する、3つのAI</h2>
+                <p class="section-subtitle fade-in text-center mx-auto">
+                    ウェビナーでご紹介した3つのAIソリューション。それぞれが営業の異なるフェーズを担い、連携して売上の最大化を実現します。
+                </p>
+                <div class="products-grid">
+
+                    <!-- 社長コピーAI -->
+                    <div class="product-card product-card--1 fade-in fade-in-delay-1" data-target="detail-1">
+                        <div class="product-card__icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                        </div>
+                        <span class="product-card__badge">AI 01</span>
+                        <h3 class="product-card__title">社長コピーAI</h3>
+                        <p class="product-card__catch">社長の想い・人柄をAIに学習させ、営業・SNS発信を24時間自動化</p>
+                        <p class="product-card__text">社長本人の想い・経験・人柄をAIに学習させ、営業文・SNS投稿・顧客対応を24時間自動で発信し続けます。</p>
+                        <div class="product-card__highlight">営業返信率 300% 向上</div>
+                        <div class="product-card__toggle">詳細を見る <span class="product-card__toggle-arrow">&#9660;</span></div>
+                    </div>
+
+                    <!-- 名刺フォローAI -->
+                    <div class="product-card product-card--2 fade-in fade-in-delay-2" data-target="detail-2">
+                        <div class="product-card__icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M7 10h0"/><path d="M11 10h6"/><path d="M7 14h0"/><path d="M11 14h6"/></svg>
+                        </div>
+                        <span class="product-card__badge">AI 02</span>
+                        <h3 class="product-card__title">名刺フォローAI</h3>
+                        <p class="product-card__catch">名刺交換後のフォローを自動化し、紹介営業を最大化</p>
+                        <p class="product-card__text">名刺の90%は放置される現実。3年・10年先まで超長期フォローを自動化し、紹介営業に特化した地方最適設計。</p>
+                        <div class="product-card__highlight">売上2倍事例 / 紹介成功率3倍</div>
+                        <div class="product-card__toggle">詳細を見る <span class="product-card__toggle-arrow">&#9660;</span></div>
+                    </div>
+
+                    <!-- 営業リスト自動生成AI -->
+                    <div class="product-card product-card--3 fade-in fade-in-delay-3" data-target="detail-3">
+                        <div class="product-card__icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </div>
+                        <span class="product-card__badge">AI 03</span>
+                        <h3 class="product-card__title">営業リスト自動生成AI</h3>
+                        <p class="product-card__catch">毎朝9時に営業リスト作成と初回メール送付まで完了</p>
+                        <p class="product-card__text">条件指定で300〜350件を自動生成。メール・FAX送付から日次レポートまで、人の2〜4時間作業を完全代替します。</p>
+                        <div class="product-card__highlight">営業母数 6〜10倍 / 作業時間ゼロ</div>
+                        <div class="product-card__toggle">詳細を見る <span class="product-card__toggle-arrow">&#9660;</span></div>
+                    </div>
+
+                    <!-- 詳細パネル: 社長コピーAI -->
+                    <div class="product-detail" id="detail-1">
+                        <div class="product-detail__inner">
+                            <div class="detail-grid">
+                                <div>
+                                    <p class="detail-section-title detail-section-title--blue">FEATURES - 主要機能</p>
+                                    <ul class="detail-features">
+                                        <li>社長データ50%超を学習し、想い・原体験・感情まで再現</li>
+                                        <li>営業文・SNS投稿・ブログ記事を自動生成</li>
+                                        <li>口調・言い回しを忠実に再現（"エモさ"の再現）</li>
+                                        <li>LP・Kindle・公式LINEなど複数チャネルに対応</li>
+                                    </ul>
+                                    <div class="detail-diff" style="margin-top: 1.25rem;">
+                                        <p class="detail-section-title detail-section-title--blue">DIFFERENTIATOR - 差別化ポイント</p>
+                                        社長データ50%超＋感情・原体験まで学習。単なるテンプレではなく、人間らしい"エモさ"を再現するAI。
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="detail-section-title detail-section-title--blue">RESULTS - 効果・実績</p>
+                                    <div class="detail-stats">
+                                        <div class="detail-stat">
+                                            <p class="detail-stat__value">300%</p>
+                                            <p class="detail-stat__label">営業返信率 向上</p>
+                                        </div>
+                                        <div class="detail-stat">
+                                            <p class="detail-stat__value">24h</p>
+                                            <p class="detail-stat__label">発信継続</p>
+                                        </div>
+                                        <div class="detail-stat">
+                                            <p class="detail-stat__value">SNS</p>
+                                            <p class="detail-stat__label">反応増加</p>
+                                        </div>
+                                    </div>
+                                    <p class="detail-section-title detail-section-title--blue" style="margin-top: 1.5rem;">PRICING</p>
+                                    <div class="detail-price">初期 <strong>50万円</strong> ／ 月額 <strong>3万円</strong></div>
+                                    <br><a href="https://copyai.figma.site/" target="_blank" rel="noopener" class="detail-url">&#8599; 詳細サイトを見る</a>
+                                    <p style="margin-top: 0.75rem; font-size: 0.8rem; color: #64748b;">対象: 創業者、1人社長、社員10名以下の中小企業</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 詳細パネル: 名刺フォローAI -->
+                    <div class="product-detail" id="detail-2">
+                        <div class="product-detail__inner">
+                            <div class="detail-grid">
+                                <div>
+                                    <p class="detail-section-title detail-section-title--green">FEATURES - 主要機能</p>
+                                    <ul class="detail-features">
+                                        <li>名刺撮影だけで顧客カルテを自動生成</li>
+                                        <li>3年・10年先までの超長期フォローメールを自動送信</li>
+                                        <li>記念日通知で人間関係を維持</li>
+                                        <li>顧客情報の自動補完で手間ゼロ</li>
+                                    </ul>
+                                    <div class="detail-diff detail-diff--green" style="margin-top: 1.25rem;">
+                                        <p class="detail-section-title detail-section-title--green">DIFFERENTIATOR - 差別化ポイント</p>
+                                        3年・10年先まで超長期フォローを完全自動化。紹介営業に特化し、地方中小企業に最適化した設計。
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="detail-section-title detail-section-title--green">RESULTS - 効果・実績</p>
+                                    <div class="detail-stats">
+                                        <div class="detail-stat">
+                                            <p class="detail-stat__value">2倍</p>
+                                            <p class="detail-stat__label">売上向上事例</p>
+                                        </div>
+                                        <div class="detail-stat">
+                                            <p class="detail-stat__value">3倍</p>
+                                            <p class="detail-stat__label">紹介成功率</p>
+                                        </div>
+                                        <div class="detail-stat">
+                                            <p class="detail-stat__value">-1h/日</p>
+                                            <p class="detail-stat__label">作業時間削減</p>
+                                        </div>
+                                    </div>
+                                    <p class="detail-section-title detail-section-title--green" style="margin-top: 1.5rem;">PRICING</p>
+                                    <div class="detail-price">初期費用なし ／ 月額 <strong>3万円〜</strong></div>
+                                    <br><a href="https://meishi.figma.site/" target="_blank" rel="noopener" class="detail-url" style="color:#059669;">&#8599; 詳細サイトを見る</a>
+                                    <p style="margin-top: 0.75rem; font-size: 0.8rem; color: #64748b;">対象: 地方中小企業、士業、保険・建設など紹介営業中心の事業者</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 詳細パネル: 営業リスト自動生成AI -->
+                    <div class="product-detail" id="detail-3">
+                        <div class="product-detail__inner">
+                            <div class="detail-grid">
+                                <div>
+                                    <p class="detail-section-title detail-section-title--purple">FEATURES - 主要機能</p>
+                                    <ul class="detail-features">
+                                        <li>条件指定で300〜350件の企業リストを自動生成</li>
+                                        <li>初回メール・FAXを自動送付（毎朝9時完了）</li>
+                                        <li>日次レポートで成果をリアルタイム可視化</li>
+                                        <li>人の2〜4時間作業を完全代替</li>
+                                    </ul>
+                                    <div class="detail-diff detail-diff--purple" style="margin-top: 1.25rem;">
+                                        <p class="detail-section-title detail-section-title--purple">DIFFERENTIATOR - 差別化ポイント</p>
+                                        毎朝9時にリスト作成から初回送信まで完了。人手を一切使わず、初回接点100%実行を実現。
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="detail-section-title detail-section-title--purple">RESULTS - 効果・実績</p>
+                                    <div class="detail-stats">
+                                        <div class="detail-stat">
+                                            <p class="detail-stat__value">6〜10倍</p>
+                                            <p class="detail-stat__label">営業母数</p>
+                                        </div>
+                                        <div class="detail-stat">
+                                            <p class="detail-stat__value">0h</p>
+                                            <p class="detail-stat__label">作業時間</p>
+                                        </div>
+                                        <div class="detail-stat">
+                                            <p class="detail-stat__value">100%</p>
+                                            <p class="detail-stat__label">初回接点実行</p>
+                                        </div>
+                                    </div>
+                                    <p class="detail-section-title detail-section-title--purple" style="margin-top: 1.5rem;">PRICING</p>
+                                    <div class="detail-price">初期 <strong>50万円</strong> ／ 月額 <strong>3万円</strong></div>
+                                    <br><a href="https://eigyolist.figma.site/" target="_blank" rel="noopener" class="detail-url" style="color:#7c3aed;">&#8599; 詳細サイトを見る</a>
+                                    <p style="margin-top: 0.75rem; font-size: 0.8rem; color: #64748b;">対象: 中小企業、1人社長、営業人材不足の企業</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Lシンク 別枠セクション ===== -->
+        <section class="lsync">
+            <div class="container">
+                <p class="section-label fade-in text-center">Plus One</p>
+                <h2 class="section-title fade-in text-center">LINE営業を、もう1つのAIで強化</h2>
+                <p class="section-subtitle fade-in text-center mx-auto">
+                    3つのAIに加えて、一対一のLINE営業を自動化する「Lシンク」。営業マン本人の思考・言い回しをAI化し、24時間のLINE対応を実現します。
+                </p>
+                <div class="lsync-card fade-in">
+                    <div class="lsync-card__header">
+                        <span class="lsync-card__badge">PLUS ONE SERVICE</span>
+                        <h3 class="lsync-card__title">Lシンク</h3>
+                        <p class="lsync-card__catch">営業マン本人の思考をAI化し、LINE対応を24時間自動化</p>
+                    </div>
+                    <div class="lsync-card__body">
+                        <div class="lsync-features">
+                            <div class="lsync-feature">
+                                <div class="lsync-feature__icon">&#128172;</div>
+                                <div class="lsync-feature__text">
+                                    <strong>LINE自動応答</strong>
+                                    <span>シナリオ型ではなく、営業マン本人をAI分身化</span>
+                                </div>
+                            </div>
+                            <div class="lsync-feature">
+                                <div class="lsync-feature__icon">&#129504;</div>
+                                <div class="lsync-feature__text">
+                                    <strong>営業思考学習</strong>
+                                    <span>本人の思考・言い回しを学習し自然文を生成</span>
+                                </div>
+                            </div>
+                            <div class="lsync-feature">
+                                <div class="lsync-feature__icon">&#128218;</div>
+                                <div class="lsync-feature__text">
+                                    <strong>顧客DB参照</strong>
+                                    <span>顧客情報を参照し、個別最適な文章を生成</span>
+                                </div>
+                            </div>
+                            <div class="lsync-feature">
+                                <div class="lsync-feature__icon">&#127760;</div>
+                                <div class="lsync-feature__text">
+                                    <strong>24時間対応</strong>
+                                    <span>深夜・休日の機会損失をゼロに</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="lsync-diff">
+                            <p class="lsync-diff__title">DIFFERENTIATOR</p>
+                            <p class="lsync-diff__text">シナリオ型ではなく営業マン本人をAI分身化。顧客情報 × 思考学習で、毎回異なる自然な文章を生成。対応人数無制限で、営業ノウハウの属人化・退職リスクも解消します。</p>
+                        </div>
+                        <div class="lsync-bottom">
+                            <div class="lsync-price">初期 <strong>5万円</strong> ／ 月額 <strong>3万円〜</strong></div>
+                            <div class="lsync-stats">
+                                <div class="lsync-stat">
+                                    <p class="lsync-stat__value">2倍</p>
+                                    <p class="lsync-stat__label">営業力</p>
+                                </div>
+                                <div class="lsync-stat">
+                                    <p class="lsync-stat__value">24h</p>
+                                    <p class="lsync-stat__label">対応</p>
+                                </div>
+                                <div class="lsync-stat">
+                                    <p class="lsync-stat__value">&#8734;</p>
+                                    <p class="lsync-stat__label">対応人数</p>
+                                </div>
+                            </div>
+                            <a href="https://lsync.figma.site/" target="_blank" rel="noopener" class="detail-url" style="color:#059669;">&#8599; 詳細サイトを見る</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Section 3: ROIシミュレーション（③数字確認 + ④ゴール合意） ===== -->
+        <section class="roi">
+            <div class="container">
+                <p class="section-label fade-in text-center">ROI Simulation</p>
+                <h2 class="section-title fade-in text-center">月たった+1件の受注で、<br>年間いくらのインパクトか？</h2>
+                <p class="section-subtitle fade-in text-center mx-auto">
+                    大きな変革ではなく、「月に1件だけ」受注が増えたら ―<br>その経済効果をシミュレーションしてみましょう。
+                </p>
+
+                <div class="roi-main-visual fade-in">
+                    <p class="roi-main-visual__label">月+1件の受注で</p>
+                    <p class="roi-main-visual__number">年間 <span>+300</span> 万円〜</p>
+                    <p class="roi-main-visual__sub">の売上増加ポテンシャル</p>
+                </div>
+
+                <div class="roi-flow fade-in">
+                    <div class="roi-flow__item">
+                        <p class="roi-flow__item-label">平均受注単価</p>
+                        <p class="roi-flow__item-value">25万円</p>
+                    </div>
+                    <span class="roi-flow__arrow">&times;</span>
+                    <div class="roi-flow__item">
+                        <p class="roi-flow__item-label">月間増加件数</p>
+                        <p class="roi-flow__item-value">+1件</p>
+                    </div>
+                    <span class="roi-flow__arrow">&times;</span>
+                    <div class="roi-flow__item">
+                        <p class="roi-flow__item-label">12ヶ月</p>
+                        <p class="roi-flow__item-value">12</p>
+                    </div>
+                    <span class="roi-flow__arrow">=</span>
+                    <div class="roi-flow__item roi-flow__item--result">
+                        <p class="roi-flow__item-label">年間増収</p>
+                        <p class="roi-flow__item-value">+300万円</p>
+                    </div>
+                </div>
+
+                <div class="roi-cards fade-in">
+                    <div class="roi-card">
+                        <div class="roi-card__icon">&#128200;</div>
+                        <h3 class="roi-card__title">売上1〜2割アップ</h3>
+                        <p class="roi-card__text">3つのAIが営業の入口から出口まで支援。売上1〜2割のアップは十分に現実的な目標です。</p>
+                    </div>
+                    <div class="roi-card">
+                        <div class="roi-card__icon">&#128176;</div>
+                        <h3 class="roi-card__title">年間300万円以上の可能性</h3>
+                        <p class="roi-card__text">受注単価25万円 &times; 月+1件 &times; 12ヶ月 = 300万円。単価や件数次第でさらに上振れます。</p>
+                    </div>
+                    <div class="roi-card">
+                        <div class="roi-card__icon">&#128161;</div>
+                        <h3 class="roi-card__title">月1件も増えない方が不自然</h3>
+                        <p class="roi-card__text">社長の分身が24h稼働、眠った名刺が商談化、全国リストが自動生成 ― 月1件も増えないことの方が考えにくい。</p>
+                    </div>
+                </div>
+
+                <div class="roi-bottom fade-in">
+                    <p class="roi-bottom__text">売上1〜2割アップ → 年間300万円以上の成長ポテンシャル</p>
+                    <p class="roi-bottom__sub">※ 受注単価・件数は企業様により異なります。上記は参考シミュレーションです。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Section 4: 料金体系（⑤費用提示） ===== -->
+        <section class="pricing">
+            <div class="container">
+                <p class="section-label fade-in text-center">Pricing</p>
+                <h2 class="section-title fade-in text-center">明確な料金体系</h2>
+                <p class="section-subtitle fade-in text-center mx-auto">
+                    3つのAIをフルパッケージで導入した場合の料金をご案内します。
+                </p>
+
+                <div class="pricing-table fade-in">
+                    <div class="pricing-row pricing-row--header">
+                        <div class="pricing-cell">項目</div>
+                        <div class="pricing-cell">金額</div>
+                    </div>
+                    <div class="pricing-row">
+                        <div class="pricing-cell">初期費用（社長コピーAI）</div>
+                        <div class="pricing-cell">50万円</div>
+                    </div>
+                    <div class="pricing-row">
+                        <div class="pricing-cell">初期費用（名刺フォローAI）※初期費用なし</div>
+                        <div class="pricing-cell">0円</div>
+                    </div>
+                    <div class="pricing-row">
+                        <div class="pricing-cell">初期費用（営業リスト自動生成AI）</div>
+                        <div class="pricing-cell">50万円</div>
+                    </div>
+                    <div class="pricing-row pricing-row--total">
+                        <div class="pricing-cell">初期費用 合計</div>
+                        <div class="pricing-cell">100万円</div>
+                    </div>
+                </div>
+
+                <div class="pricing-table fade-in">
+                    <div class="pricing-row pricing-row--header">
+                        <div class="pricing-cell">月額ランニング</div>
+                        <div class="pricing-cell">金額</div>
+                    </div>
+                    <div class="pricing-row">
+                        <div class="pricing-cell">社長コピーAI 月額</div>
+                        <div class="pricing-cell">3万円/月</div>
+                    </div>
+                    <div class="pricing-row">
+                        <div class="pricing-cell">名刺フォローAI 月額</div>
+                        <div class="pricing-cell">3万円/月</div>
+                    </div>
+                    <div class="pricing-row">
+                        <div class="pricing-cell">営業リスト自動生成AI 月額</div>
+                        <div class="pricing-cell">3万円/月</div>
+                    </div>
+                    <div class="pricing-row pricing-row--total">
+                        <div class="pricing-cell">月額合計</div>
+                        <div class="pricing-cell">9万円/月</div>
+                    </div>
+                </div>
+
+                <div class="pricing-summary fade-in">
+                    <div class="pricing-summary__item">
+                        <p class="pricing-summary__label">初年度 年間コスト</p>
+                        <p class="pricing-summary__value">208<small>万円</small></p>
+                    </div>
+                    <div class="pricing-summary__item">
+                        <p class="pricing-summary__label">2年目以降 年間コスト</p>
+                        <p class="pricing-summary__value">108<small>万円</small></p>
+                    </div>
+                </div>
+
+                <p class="pricing-note fade-in" style="margin-top: 1.5rem;">
+                    ※ 税別表記です。Lシンクを追加する場合: 初期5万円 + 月額3万円〜（別途）<br>
+                    ※ 導入スコープに応じた個別お見積りも可能です。
+                </p>
+            </div>
+        </section>
+
+        <!-- ===== Section 5: コスト比較（⑥価格妥当性） ===== -->
+        <section class="comparison">
+            <div class="container">
+                <p class="section-label fade-in text-center">Cost Comparison</p>
+                <h2 class="section-title fade-in text-center">人を1人採用するよりも、安い</h2>
+                <p class="section-subtitle fade-in text-center mx-auto">
+                    営業人材1名の採用・維持コストと、AI導入コストを比較してみましょう。
+                </p>
+
+                <div class="comparison-grid fade-in">
+                    <div class="comparison-card comparison-card--ai">
+                        <span class="comparison-card__recommend">RECOMMENDED</span>
+                        <h3 class="comparison-card__title">AI導入（3AI + Lシンク）</h3>
+                        <div class="comparison-card__price">
+                            <p class="comparison-card__price-label">2年目以降の年間コスト</p>
+                            <p class="comparison-card__price-value">144万円</p>
+                            <p class="comparison-card__price-unit">年間（月額12万円）</p>
+                        </div>
+                        <ul class="comparison-card__list">
+                            <li>24時間365日稼働</li>
+                            <li>休まない・辞めない・ブレない</li>
+                            <li>4つの営業プロセスを同時カバー</li>
+                            <li>導入後すぐに稼働開始</li>
+                            <li>成果が出るほどノウハウ蓄積</li>
+                        </ul>
+                    </div>
+                    <div class="comparison-card__vs">VS</div>
+                    <div class="comparison-card comparison-card--human">
+                        <h3 class="comparison-card__title">営業人材1名を採用</h3>
+                        <div class="comparison-card__price">
+                            <p class="comparison-card__price-label">年間コスト（中小企業平均）</p>
+                            <p class="comparison-card__price-value">400〜500万円</p>
+                            <p class="comparison-card__price-unit">年間（給与+社保+採用費）</p>
+                        </div>
+                        <ul class="comparison-card__list">
+                            <li>1日8時間 &times; 週5日の稼働</li>
+                            <li>採用に3〜6ヶ月かかる</li>
+                            <li>戦力化に半年〜1年</li>
+                            <li>離職リスクあり</li>
+                            <li>退職時にノウハウが流出</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="comparison-bottom fade-in">
+                    <div class="comparison-bottom__item">
+                        <div class="comparison-bottom__icon">&#9203;</div>
+                        <p class="comparison-bottom__text">24時間稼働</p>
+                        <p class="comparison-bottom__sub">休みなく営業活動</p>
+                    </div>
+                    <div class="comparison-bottom__item">
+                        <div class="comparison-bottom__icon">&#128170;</div>
+                        <p class="comparison-bottom__text">辞めない</p>
+                        <p class="comparison-bottom__sub">離職リスクゼロ</p>
+                    </div>
+                    <div class="comparison-bottom__item">
+                        <div class="comparison-bottom__icon">&#128202;</div>
+                        <p class="comparison-bottom__text">ノウハウ蓄積</p>
+                        <p class="comparison-bottom__sub">使うほど賢くなる</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Section 6: 活用イメージ（⑦事例） ===== -->
+        <section class="use-cases">
+            <div class="container">
+                <p class="section-label fade-in text-center">Use Cases</p>
+                <h2 class="section-title fade-in text-center">こんな成果が期待できます</h2>
+                <p class="section-subtitle fade-in text-center mx-auto">
+                    4つのAIを導入した企業で実現される、具体的な活用シーンと成果イメージをご紹介します。
+                </p>
+                <div class="use-cases-grid">
+                    <div class="use-case-card fade-in fade-in-delay-1">
+                        <div class="use-case-card__number">01</div>
+                        <div class="use-case-card__body">
+                            <h3 class="use-case-card__title">社長コピーAIで公式LINE自動運用</h3>
+                            <p class="use-case-card__text">社長のトーク・ノウハウをAIが学習し、公式LINEで24時間自動対応。見込み客からの問い合わせに即座にパーソナライズ回答。</p>
+                            <p class="use-case-card__result">&#8594; 営業返信率 300%向上、「社長が直接対応してくれている」と好評</p>
+                        </div>
+                    </div>
+                    <div class="use-case-card fade-in fade-in-delay-2">
+                        <div class="use-case-card__number">02</div>
+                        <div class="use-case-card__body">
+                            <h3 class="use-case-card__title">名刺フォローAIで紹介営業を最大化</h3>
+                            <p class="use-case-card__text">展示会で交換した500枚の名刺に対し、3年間の長期フォローを自動実施。記念日通知で関係を維持し、紹介の連鎖を生む。</p>
+                            <p class="use-case-card__result">&#8594; 紹介成功率3倍、1日1時間以上の作業削減</p>
+                        </div>
+                    </div>
+                    <div class="use-case-card fade-in fade-in-delay-1">
+                        <div class="use-case-card__number">03</div>
+                        <div class="use-case-card__body">
+                            <h3 class="use-case-card__title">営業リストAIで新規開拓を自動化</h3>
+                            <p class="use-case-card__text">毎朝9時に300件のリスト生成＋メール送付が完了。日次レポートで反応を確認し、有望リードだけに集中。</p>
+                            <p class="use-case-card__result">&#8594; 営業母数6〜10倍、作業時間ゼロ、初回接点100%実行</p>
+                        </div>
+                    </div>
+                    <div class="use-case-card fade-in fade-in-delay-2">
+                        <div class="use-case-card__number">04</div>
+                        <div class="use-case-card__body">
+                            <h3 class="use-case-card__title">LシンクでLINE営業を24時間化</h3>
+                            <p class="use-case-card__text">営業マンの思考・言い回しをAIが学習。深夜・休日でも顧客ごとに最適化されたLINE対応を自動で行い、機会損失をゼロに。</p>
+                            <p class="use-case-card__result">&#8594; 営業力2倍、対応人数無制限、属人リスク解消</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Section 7: 導入プラン（⑧クロージング） ===== -->
+        <section class="closing">
+            <div class="container">
+                <p class="section-label fade-in text-center">Implementation Plan</p>
+                <h2 class="section-title fade-in text-center">2つの導入プラン</h2>
+                <p class="section-subtitle fade-in text-center mx-auto">
+                    御社の状況に合わせて、最適なスタート方法をお選びいただけます。
+                </p>
+
+                <div class="plan-grid">
+                    <div class="plan-card plan-card--a fade-in fade-in-delay-1">
+                        <span class="plan-card__recommend">RECOMMENDED</span>
+                        <p class="plan-card__name">PLAN A</p>
+                        <h3 class="plan-card__title">一括導入プラン</h3>
+                        <ul class="plan-card__list">
+                            <li>3つのAI + Lシンクを同時に導入</li>
+                            <li>AIバード 30時間の導入支援付き</li>
+                            <li>初月から4つの営業チャネルが稼働</li>
+                            <li>連携効果で最大のROIを実現</li>
+                        </ul>
+                        <div class="plan-card__merit">
+                            4AI連携による相乗効果で、売上インパクトを最大化。導入支援で確実に立ち上がります。
+                        </div>
+                    </div>
+                    <div class="plan-card plan-card--b fade-in fade-in-delay-2">
+                        <p class="plan-card__name">PLAN B</p>
+                        <h3 class="plan-card__title">スモールスタート</h3>
+                        <ul class="plan-card__list">
+                            <li>まず1つのAIから試す</li>
+                            <li>効果を実感してから拡大</li>
+                            <li>初期投資を抑えてスタート</li>
+                            <li>段階的にフル体制へ移行可能</li>
+                        </ul>
+                        <div class="plan-card__merit">
+                            リスクを最小限に抑えつつ、AIの効果を体感。成功体験をもとに拡大いただけます。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="closing-cta fade-in">
+                    <p class="closing-cta__text">
+                        どちらのプランでも、<br>
+                        まずは御社の課題とゴールを整理するところから。
+                    </p>
+                    <p class="closing-cta__sub">
+                        本日のお話を踏まえて、最適なプランをご一緒に設計させてください。
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- フッター -->
+    <footer class="site-footer">
+        <img src="../ロゴ.svg" alt="WriteUp!" class="site-footer__logo">
+        <p class="site-footer__company">株式会社ライトアップ（東証グロース 6580）</p>
+        <p class="site-footer__copyright">&copy; 2026 WriteUp! Co., Ltd.</p>
+    </footer>
+
+    <!-- スクロールアニメーション & カード展開 -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // スクロールアニメーション
+            var targets = document.querySelectorAll(".fade-in");
+            if ("IntersectionObserver" in window) {
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add("is-visible");
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.12 });
+                targets.forEach(function (target) { observer.observe(target); });
+            } else {
+                targets.forEach(function (target) { target.classList.add("is-visible"); });
+            }
+
+            // カード展開トグル
+            var cards = document.querySelectorAll(".product-card[data-target]");
+            cards.forEach(function (card) {
+                card.addEventListener("click", function () {
+                    var targetId = this.getAttribute("data-target");
+                    var detail = document.getElementById(targetId);
+                    var isActive = this.classList.contains("is-active");
+
+                    // 他のカードを閉じる
+                    cards.forEach(function (c) {
+                        c.classList.remove("is-active");
+                        var otherId = c.getAttribute("data-target");
+                        var otherDetail = document.getElementById(otherId);
+                        if (otherDetail && otherId !== targetId) {
+                            otherDetail.style.maxHeight = "0";
+                            otherDetail.classList.remove("is-open");
+                        }
+                    });
+
+                    // トグル
+                    if (isActive) {
+                        this.classList.remove("is-active");
+                        detail.style.maxHeight = "0";
+                        detail.classList.remove("is-open");
+                    } else {
+                        this.classList.add("is-active");
+                        detail.classList.add("is-open");
+                        detail.style.maxHeight = detail.scrollHeight + "px";
+                        // スクロール位置を調整
+                        setTimeout(function () {
+                            detail.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                        }, 300);
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
